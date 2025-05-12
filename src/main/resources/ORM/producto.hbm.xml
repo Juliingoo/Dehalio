@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <!-- Tiene un mapeo de todas las variables que corresponden a las columnas de la base de datos -->
+    <class name="model.producto" table="producto">
+
+        <meta attribute="class-description">
+            Esta clase representa un producto específico ofrecido por un comercio, como "uvas moscatel" o "lechuga iceberg".
+        </meta>
+
+        <!-- ID autogenerado en la base de datos -->
+        <id name="idProducto" type="int" column="idProducto">
+            <generator class="increment"/>
+        </id>
+
+        <property name="nombre" column="nombre" type="string" not-null="true"/>
+        <property name="imagen" column="imagen" type="binary"/>
+        <property name="precio" column="precio" type="double"/>
+
+        <!-- Relaciones con otras tablas -->
+        <many-to-one name="tipoPrecio" class="model.tipoPrecio" column="tipoPrecio" not-null="false"/>
+        <many-to-one name="comercio" class="model.comercio" column="comercio" not-null="true"/>
+        <many-to-one name="tipo" class="model.tipoProducto" column="tipo" not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>

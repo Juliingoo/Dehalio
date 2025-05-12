@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="900.0" stylesheets="css/REG_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.REGController">
+
+    <!-- Botón Atrás en la esquina superior izquierda -->
+    <Button fx:id="atrasBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#volverAtrasAction" style="-fx-background-color: FFFFFF; -fx-border-radius: 100;" text="&lt;" textFill="#ff4c4c">
+      <font>
+         <Font name="System Bold" size="25.0" />
+      </font></Button>
+
+    <!-- Contenedor principal centrado -->
+    <StackPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="40.0">
+        <!-- Panel blanco con contenido -->
+        <VBox alignment="CENTER" maxHeight="300.0" maxWidth="500.0" style="-fx-background-color: FFFFFF; -fx-background-radius: 10;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <!-- Logo encima del cuadro -->
+            <ImageView fitHeight="100.0" fitWidth="100.0" translateY="-50">
+                <image>
+                    <Image url="@images/Logo_Dehalio_Cortado_borde_blanco.png" />
+                </image>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+            </ImageView>
+         <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Registro">
+            <font>
+               <Font name="System Bold" size="25.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="25.0" top="-30.0" />
+            </VBox.margin>
+         </Text>
+
+            <!-- Campos de texto -->
+            <!-- Nombre y Apellidos en la misma línea -->
+            <HBox alignment="CENTER" spacing="10">
+                <TextField fx:id="nombreCampo" prefWidth="200" promptText="Nombre">
+                    <HBox.margin>
+                        <Insets bottom="20.0" />
+                    </HBox.margin>
+                </TextField>
+                <TextField fx:id="apellidosCampo" prefWidth="200" promptText="Apellidos">
+                    <HBox.margin>
+                        <Insets bottom="20.0" />
+                    </HBox.margin>
+                </TextField>
+            </HBox>
+
+            <TextField fx:id="emailCampo" maxWidth="410.0" promptText="Correo electrónico">
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </TextField>
+
+            <!-- Contraseña y Repetir Contraseña en la misma línea -->
+            <HBox alignment="CENTER" spacing="10">
+                <PasswordField fx:id="contraseniaCampo" prefWidth="200" promptText="Contraseña">
+                    <HBox.margin>
+                        <Insets bottom="20.0" />
+                    </HBox.margin>
+                </PasswordField>
+                <PasswordField fx:id="repetirContraseniaCampo" prefWidth="200" promptText="Repetir contraseña">
+                    <HBox.margin>
+                        <Insets bottom="20.0" />
+                    </HBox.margin>
+                </PasswordField>
+            </HBox>
+
+            <!-- Botones -->
+            <HBox alignment="TOP_RIGHT" spacing="10">
+                <Button fx:id="registrarseBtn" mnemonicParsing="false" onAction="#registrarseAction" prefHeight="32.0" prefWidth="100.0" text="Registrarse" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets right="25.0" />
+               </HBox.margin></Button>
+            </HBox>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+        </VBox>
+    </StackPane>
+</AnchorPane>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="css/INI_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.INIController">
+    <!-- Contenedor principal centrado -->
+    <StackPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="40.0">
+        <!-- Panel blanco con contenido -->
+        <VBox alignment="CENTER" maxHeight="250.0" maxWidth="350.0" style="-fx-background-color: FFFFFF; -fx-background-radius: 10;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <!-- Logo -->
+            <ImageView fitHeight="100.0" fitWidth="100.0" translateY="-50">
+                <image>
+                    <Image url="@images/Logo_Dehalio_Cortado_borde_blanco.png" />
+                </image>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+            </ImageView>
+         <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Inicio de sesión" textAlignment="CENTER">
+            <VBox.margin>
+               <Insets bottom="30.0" top="-30.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="24.0" />
+            </font>
+         </Text>
+
+            <!-- Campos de texto -->
+            <TextField fx:id="emailCampo" promptText="Correo electrónico">
+            <VBox.margin>
+               <Insets bottom="30.0" />
+            </VBox.margin></TextField>
+            <PasswordField fx:id="contraseniaCampo" promptText="Contraseña">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></PasswordField>
+
+            <!-- Botones -->
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="registrarseBtn" mnemonicParsing="false" onAction="#registrarseAction" prefHeight="32.0" prefWidth="100.0" text="Registrarse" />
+                <Button fx:id="iniciarSesionBtn" mnemonicParsing="false" onAction="#iniciarSesionAction" prefHeight="32.0" prefWidth="100.0" text="Iniciar sesión" />
+            </HBox>
+        </VBox>
+    </StackPane>
+</AnchorPane>

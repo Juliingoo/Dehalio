@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <!-- Tiene un mapeo de todas las variables que corresponden a las columnas de la base de datos -->
+    <class name="model.valoracion" table="valoracion">
+
+        <meta attribute="class-description">
+            Esta clase representa una valoración hecha por un usuario sobre un comercio, incluyendo una puntuación y un comentario.
+        </meta>
+
+        <!-- ID autogenerado en la base de datos -->
+        <id name="idValoracion" type="int" column="idValoracion">
+            <generator class="increment"/>
+        </id>
+
+        <property name="puntuacion" column="puntuacion" type="int" not-null="true"/>
+        <property name="comentario" column="comentario" type="string"/>
+
+        <!-- Relaciones -->
+        <many-to-one name="usuario" class="model.usuario" column="idUsuario" not-null="true"/>
+        <many-to-one name="comercio" class="model.comercio" column="idComercio" not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>

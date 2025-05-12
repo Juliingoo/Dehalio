@@ -1,0 +1,29 @@
+/* Estilos generales */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Botones de navegación */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-background-radius: 5;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+/* Estilo para el botón de usuario */
+.user-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-padding: 5;
+}
+
+.user-button:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}

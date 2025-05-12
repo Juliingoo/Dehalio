@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <!-- Mapeo de la clase Comercio -->
+    <class name="model.comercio" table="comercio">
+
+        <meta attribute="class-description">
+            Esta clase representa los comercios registrados en el sistema, gestionados por usuarios con perfil de comerciante.
+        </meta>
+
+        <!-- ID autogenerado en la base de datos -->
+        <id name="idComercio" type="int" column="idComercio">
+            <generator class="increment"/>
+        </id>
+
+        <!-- Propiedades que corresponden a las columnas de la tabla -->
+        <property name="nombre" column="nombre" type="string" not-null="true"/>
+        <property name="nif" column="NIF" type="string" not-null="true"/>
+        <property name="imagen" column="imagen" type="binary"/>
+        <property name="direccion" column="direccion" type="string" not-null="true"/>
+        <property name="codigoPostal" column="codigoPostal" type="string" not-null="true"/>
+        <property name="municipio" column="municipio" type="string" not-null="true"/>
+        <property name="provincia" column="provincia" type="string" not-null="true"/>
+        <property name="coordenadas" column="coordenadas" type="string" not-null="true"/>
+
+        <!-- Relación Many-to-One con la tabla usuario -->
+        <many-to-one name="propietario" class="model.usuario" column="propietario" not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>

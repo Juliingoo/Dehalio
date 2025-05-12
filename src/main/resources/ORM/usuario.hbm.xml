@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="model.usuario" table="usuario">
+
+        <meta attribute="class-description">
+            Esta clase representa a los usuarios registrados, incluyendo consumidores y propietarios (comerciantes).
+        </meta>
+
+        <id name="idUsuario" type="int" column="idUsuario">
+            <generator class="increment"/>
+        </id>
+
+        <property name="nombre" column="nombre" type="string" not-null="true"/>
+        <property name="apellidos" column="apellidos" type="string" not-null="true"/>
+        <property name="email" column="email" type="string" not-null="true"/>
+        <property name="contrasenia" column="contrasenia" type="string" not-null="true"/>
+        <property name="direccion" column="direccion" type="string"/>
+        <property name="codigoPostal" column="codigoPostal" type="string"/>
+        <property name="municipio" column="municipio" type="string"/>
+        <property name="provincia" column="provincia" type="string"/>
+        <property name="propietario" column="propietario" type="boolean" not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>

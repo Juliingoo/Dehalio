@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <!-- Tiene un mapeo de todas las variables que corresponden a las columnas de la base de datos -->
+    <class name="model.categoriaTipoProducto" table="categoriaTipoProducto">
+
+        <meta attribute="class-description">
+            Esta clase representa las categorías generales de los productos (por ejemplo: Fruta, Verdura, Electrodoméstico).
+        </meta>
+
+        <!-- ID autogenerado en la base de datos -->
+        <id name="idCategoriaTipoProducto" type="int" column="idCategoriaTipoProducto">
+            <generator class="increment"/>
+        </id>
+
+        <property name="nombre" column="nombre" type="string" not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>
