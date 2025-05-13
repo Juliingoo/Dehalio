@@ -1,29 +1,52 @@
-/* Estilos generales */
-.root {
-    -fx-font-family: 'Segoe UI', Arial, sans-serif;
-}
-
 /* Botones de navegación */
-.nav-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 10 15;
+.nav-button-sel {
+    -fx-background-color: #fde8e5;
+    -fx-text-fill: #565557;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
     -fx-background-radius: 5;
 }
 
-.nav-button:hover {
-    -fx-background-color: rgba(255,255,255,0.1);
+.nav-button-sel:hover {
+    -fx-background-color: #e87d6f;
 }
 
-/* Estilo para el botón de usuario */
-.user-button {
-    -fx-background-color: transparent;
-    -fx-background-radius: 20;
-    -fx-padding: 5;
+.nav-button-sel:pressed {
+    -fx-background-color: #c44536;
 }
 
-.user-button:hover {
-    -fx-background-color: rgba(255,255,255,0.1);
+.nav-button-des {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #565557;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-radius: 5;
+}
+
+.nav-button-des:hover {
+    -fx-background-color: #fde8e5;
+}
+
+.nav-button-des:pressed {
+    -fx-background-color: #c44536;
+
+}
+
+.buscar-button {
+    -fx-background-color: #de4733;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-radius: 15;
+}
+
+.buscar-button:hover {
+    -fx-background-color: #de3822;
+}
+
+.buscar-button:pressed {
+    -fx-background-color: #c44536;
 }
