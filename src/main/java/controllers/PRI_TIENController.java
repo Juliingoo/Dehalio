@@ -3,9 +3,7 @@ package controllers;
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
-
 import database.Sesion;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,17 +17,17 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import model.comercio;
-import model.producto;
+import model.comercio;
 import model.productoFavorito;
-
-import org.hibernate.Session;
 import org.hibernate.Query;
-
+import org.hibernate.Session;
 import utilities.Localizacion;
 import utilities.LogAdministrador;
 import utilities.Paths;
@@ -48,7 +46,7 @@ import static database.Sesion.newSession;
 import static utilities.Localizacion.calcularDistancia;
 import static utilities.LogAdministrador.*;
 
-public class PRI_INIController implements Initializable{
+public class PRI_TIENController implements Initializable{
 
     Session session = newSession();
 
@@ -65,10 +63,10 @@ public class PRI_INIController implements Initializable{
     private Button btnBuscar;
 
     @FXML
-    private ScrollPane scrollPaneProductos;
+    private ScrollPane scrollPaneComercios;
 
     @FXML
-    private FlowPane productosContainer;
+    private FlowPane comerciosContainer;
 
     @FXML
     private Slider kmSlider;
@@ -78,7 +76,7 @@ public class PRI_INIController implements Initializable{
 
     MapView mapView = new MapView();
 
-    private MapLayer marcadorProductoLayer = new MapLayer();
+    private MapLayer marcadorcomercioLayer = new MapLayer();
 
     double[] coordsUsuario = Localizacion.obtenerCoordenadasUsuario();
     double latUsuario = coordsUsuario[0];
@@ -86,11 +84,11 @@ public class PRI_INIController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(inicioInfoLogConsola() + "Inicializando pantalla principal. Recuperando productos");
-        escribirLogInfo("Inicializando pantalla principal. Recuperando productos.");
-        Query<producto> qProducto = session.createQuery("from producto");
-        List<producto> listaProducto = qProducto.getResultList();
-        cargarProductos(getProductosFiltradosCercania(listaProducto));
+        System.out.println(inicioInfoLogConsola() + "Inicializando pantalla principal. Recuperando comercios");
+        escribirLogInfo("Inicializando pantalla principal. Recuperando comercios.");
+        Query<comercio> qComercio = session.createQuery("from comercio");
+        List<comercio> listaComercios = qComercio.getResultList();
+        cargarComercios(getComerciosFiltradosCercania(listaComercios));
         cargarMapa();
     }
 
@@ -149,28 +147,27 @@ public class PRI_INIController implements Initializable{
 
         String criterioBusqueda = barraBusqueda.getText();
 
-        // Buscar productos cuyo nombre coincida
-        Query<producto> qProducto = session.createQuery("FROM producto WHERE nombre LIKE :criterio", producto.class);
-        qProducto.setParameter("criterio", "%" + criterioBusqueda + "%");
+        // Buscar comercios cuyo nombre coincida
+        Query<comercio> qComercio = session.createQuery("FROM comercio WHERE nombre LIKE :criterio", comercio.class);
+        qComercio.setParameter("criterio", "%" + criterioBusqueda + "%");
 
-        cargarProductos(getProductosFiltradosCercania(qProducto.getResultList()));
+        cargarComercios(getComerciosFiltradosCercania(qComercio.getResultList()));
     }
 
-    public List<producto> getProductosFiltradosCercania(List<producto> listaProductosSinFiltrar){
-        escribirLogInfo("Filtrando productos por cercanía");
-        List<producto> productosFiltrados = new ArrayList<>();
-        for (producto p : listaProductosSinFiltrar) {
-            comercio c = p.getComercio(); // asumiendo getter correcto
-            if (c != null && c.getCoordenadas() != null) {
+    public List<comercio> getComerciosFiltradosCercania(List<comercio> listaComerciosSinFiltrar){
+        escribirLogInfo("Filtrando comercios por cercanía");
+        List<comercio> comerciosFiltrados = new ArrayList<>();
+        for (comercio comercio : listaComerciosSinFiltrar) {
+            if (comercio != null && comercio.getCoordenadas() != null) {
                 try {
-                    String[] partes = c.getCoordenadas().split(",");
+                    String[] partes = comercio.getCoordenadas().split(",");
                     double latComercio = Double.parseDouble(partes[0].trim());
                     double lonComercio = Double.parseDouble(partes[1].trim());
 
                     double distancia = calcularDistancia(latUsuario, lonUsuario, latComercio, lonComercio);
                     LogAdministrador.escribirLogInfo("Distancia establecida: " + kmSlider.getValue());
                     if (distancia <= kmSlider.getValue()) { // filtrar a km
-                        productosFiltrados.add(p);
+                        comerciosFiltrados.add(comercio);
                     }
                 } catch (Exception e) {
                     System.out.println("Error al leer coordenadas del comercio: " + e.getMessage());
@@ -178,127 +175,80 @@ public class PRI_INIController implements Initializable{
                 }
             }
         }
-        return productosFiltrados;
+        return comerciosFiltrados;
     }
 
-    private void cargarProductos(List<producto> listaProductos) {
-        escribirLogInfo("Cargando lista de productos");
-        productosContainer.getChildren().clear();
+    private void cargarComercios(List<comercio> listaComercios) {
+        escribirLogInfo("Cargando lista de tiendas");
+        comerciosContainer.getChildren().clear();
 
-        for (producto producto : listaProductos) {
+        for (comercio comercio : listaComercios) {
             // Crear contenedor principal tipo VBox (tarjeta vertical)
-            VBox tarjetaProducto = new VBox();
-            tarjetaProducto.setSpacing(8);
-            tarjetaProducto.setPadding(new Insets(10));
-            tarjetaProducto.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; " +
+            VBox tarjetaComercio = new VBox();
+            tarjetaComercio.setSpacing(8);
+            tarjetaComercio.setPadding(new Insets(10));
+            tarjetaComercio.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; " +
                     "-fx-border-radius: 10; -fx-border-color: #ddd; " +
                     "-fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);");
-            tarjetaProducto.setPrefWidth(300);
-            tarjetaProducto.setPrefHeight(100);
+            tarjetaComercio.setPrefWidth(300);
+            tarjetaComercio.setPrefHeight(100);
 
-            // Imagen del producto
-            byte[] imagenProducto = producto.getImagen();
+            // Imagen del comercio
+            byte[] imagenComercio = comercio.getImagen();
             Image img;
 
-            if (imagenProducto != null && imagenProducto.length > 0) {
-                img = new Image(new ByteArrayInputStream(imagenProducto));
+            if (imagenComercio != null && imagenComercio.length > 0) {
+                img = new Image(new ByteArrayInputStream(imagenComercio));
             } else {
-                img = new Image(getClass().getResourceAsStream("/iconos/productoSinImagen.png"));
+                img = new Image(getClass().getResourceAsStream("/iconos/comercioSinImagen.png"));
             }
 
             ImageView imageView = new ImageView(img);
             imageView.setFitWidth(100);
             imageView.setPreserveRatio(true);
-            tarjetaProducto.getChildren().add(imageView);
+            tarjetaComercio.getChildren().add(imageView);
 
 
-            // Nombre del producto
-            Label labelNombre = new Label(producto.getNombre());
+            // Nombre del comercio
+            Label labelNombre = new Label(comercio.getNombre());
             labelNombre.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-            // Precio
-            Label labelPrecio = new Label(String.format("%.2f €", producto.getPrecio()));
-            labelPrecio.setStyle("-fx-font-size: 14px; -fx-text-fill: #e53935;");
+            //Direccion del comercio
+            Label labelDireccion = new Label(comercio.getDireccion());
+            labelDireccion.setStyle("-fx-font-size: 12; -fx-text-fill: #757575");
 
-            // Comercio asociado (asegúrate de que producto.getComercio() no sea null)
-            String nombreComercio = producto.getComercio() != null ? producto.getComercio().getNombre() : "Sin comercio";
-            Label labelComercio = new Label("Comercio: " + nombreComercio);
-            labelComercio.setStyle("-fx-font-size: 12px; -fx-text-fill: #757575;");
-
-            // Botón de favorito
-            Button btnFavorito = new Button();
-            btnFavorito.setStyle("""
-            -fx-background-color: #e53935;
-            -fx-background-radius: 50%;
-            -fx-padding: 8;
-            -fx-cursor: hand;
-        """);
-
-            // Imagen corazón
-            ImageView iconoCorazon = new ImageView(new Image(getClass().getResourceAsStream("/iconos/corazonBlanco.png")));
-            iconoCorazon.setFitWidth(16);
-            iconoCorazon.setFitHeight(16);
-            btnFavorito.setGraphic(iconoCorazon);
-
-            btnFavorito.setOnMousePressed(event -> btnFavorito.setStyle("""
-            -fx-background-color: #ab2e2b;
-            -fx-background-radius: 50%;
-            -fx-padding: 8;
-            -fx-cursor: hand;
-              """));
-
-            btnFavorito.setOnMouseReleased(event -> btnFavorito.setStyle("""
-            -fx-background-color: #e53935;
-            -fx-background-radius: 50%;
-            -fx-padding: 8;
-            -fx-cursor: hand;
-              """));
-
-            // Acción al hacer clic
-            btnFavorito.setOnAction(e -> {
-                productoFavorito productoFavorito = new productoFavorito();
-                productoFavorito.setProducto(producto);
-                productoFavorito.setUsuario(Sesion.usuario);
-                session.beginTransaction();
-                session.save(productoFavorito);
-                session.getTransaction().commit();
-            });
-
-            // Contenedor horizontal inferior con botón
-            HBox hBoxInferior = new HBox(btnFavorito);
-            hBoxInferior.setAlignment(Pos.CENTER_RIGHT);
-            tarjetaProducto.getChildren().addAll(labelNombre, labelPrecio, labelComercio, hBoxInferior);
+            tarjetaComercio.getChildren().addAll(labelNombre, labelDireccion);
 
             // Cambiar estilo al pasar el ratón por encima
-            tarjetaProducto.setOnMouseEntered(event -> tarjetaProducto.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);"));
+            tarjetaComercio.setOnMouseEntered(event -> tarjetaComercio.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);"));
 
             // Restaurar estilo al salir el ratón
-            tarjetaProducto.setOnMouseExited(event -> tarjetaProducto.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"));
+            tarjetaComercio.setOnMouseExited(event -> tarjetaComercio.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"));
 
             // Cambiar estilo al pulsar
-            tarjetaProducto.setOnMousePressed(event -> tarjetaProducto.setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);"));
+            tarjetaComercio.setOnMousePressed(event -> tarjetaComercio.setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);"));
 
             // Evento de clic para mostrar las coordenadas en el mapa
-            tarjetaProducto.setOnMouseClicked(event -> {
-                String coordenadasProducto = producto.getComercio().getCoordenadas();
-                if (!coordenadasProducto.isEmpty() || !coordenadasProducto.isBlank()) {
-                    String coordenasProductoSeparadas[] = coordenadasProducto.split(",");
-                    double latitud = Double.valueOf(coordenasProductoSeparadas[0]);
-                    double longitud = Double.valueOf(coordenasProductoSeparadas[1]);
+            tarjetaComercio.setOnMouseClicked(event -> {
+                String coordenadasComercio = comercio.getCoordenadas();
+                if (!coordenadasComercio.isEmpty() || !coordenadasComercio.isBlank()) {
+                    String coordenasComercioSeparadas[] = coordenadasComercio.split(",");
+                    double latitud = Double.valueOf(coordenasComercioSeparadas[0]);
+                    double longitud = Double.valueOf(coordenasComercioSeparadas[1]);
 
-                    MapPoint puntoProducto = new MapPoint(latitud, longitud);
-                    mapView.flyTo(0, puntoProducto, 0.01); // Centrar el mapa en las coordenadas del producto
-                    mostrarUbicacion(coordenadasProducto, producto);
+                    MapPoint puntoComercio = new MapPoint(latitud, longitud);
+                    mapView.flyTo(0, puntoComercio, 0.01); // Centrar el mapa en las coordenadas del comercio
+                    mostrarUbicacion(coordenadasComercio, comercio);
                 } else {
-                    mostrarError("Coordenadas no disponibles", "El producto no tiene coordenadas asignadas.",
-                            "No se encuentran las coordenadas del producto");
-                    escribirLogError("El producto no tiene coordenadas asignadas " +
-                            " Producto: " + producto.getIdProducto() + " | en Tienda:" + producto.getComercio());
+                    mostrarError("Coordenadas no disponibles", "El comercio no tiene coordenadas asignadas.",
+                            "No se encuentran las coordenadas del comercio");
+                    escribirLogError("El comercio no tiene coordenadas asignadas " +
+                            " Comercio: " + comercio.getIdComercio());
                 }
             });
 
             // Añadir tarjeta al contenedor principal
-            productosContainer.getChildren().add(tarjetaProducto);
+            comerciosContainer.getChildren().add(tarjetaComercio);
         }
     }
 
@@ -325,21 +275,21 @@ public class PRI_INIController implements Initializable{
         mapView.setZoom(15);
 
         // Añadir capa de marcador al mapa
-        mapView.addLayer(marcadorProductoLayer);
+//        mapView.addLayer(marcadorComercioLayer);
 
         mapVBox.getChildren().add(mapView);
     }
 
-    private void mostrarUbicacion(String coordenadas, producto producto) {
-        escribirLogInfo("Obteniendo coordenadas del producto: " + producto.getIdProducto());
-        System.out.println(inicioInfoLogConsola() + "Obteniendo coordenadas del producto: " + producto.getIdProducto());
+    private void mostrarUbicacion(String coordenadas, comercio comercio) {
+        escribirLogInfo("Obteniendo coordenadas del comercio: " + comercio.getIdComercio());
+        System.out.println(inicioInfoLogConsola() + "Obteniendo coordenadas del comercio: " + comercio.getIdComercio());
 
         // Si ya existe el HBox de ubicación, lo quitamos para evitar duplicados
         mapVBox.getChildren().removeIf(node -> "ubicacionBox".equals(node.getId()));
 
         // Texto con la ubicación
-        Label ubicacionLabel = new Label("Ubicación del producto: " + producto.getComercio().getDireccion() + ", "
-                + producto.getComercio().getMunicipio() + ", " + producto.getComercio().getProvincia());
+        Label ubicacionLabel = new Label("Ubicación del comercio: " + comercio.getDireccion() + ", "
+                + comercio.getMunicipio() + ", " + comercio.getProvincia());
         ubicacionLabel.setStyle("-fx-font-size: 14px;");
 
         // Botón para abrir Google Maps

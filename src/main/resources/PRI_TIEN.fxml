@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="css/PRI_INI_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PRI_INIController">
+<HBox fx:id="rootPriTien" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="css/PRI_TIEN_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PRI_TIENController">
    <children>
        <!-- Barra lateral de navegación -->
        <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #FFFFFF;" HBox.hgrow="ALWAYS">
@@ -36,7 +36,7 @@
          </VBox>
    
            <!-- Botones de navegación -->
-           <Button fx:id="btnInicio" onAction="#btnInicioAction" alignment="CENTER" prefWidth="500000.0" styleClass="nav-button-sel" text="Inicio" textAlignment="CENTER" textFill="#de4733">
+           <Button fx:id="btnInicio" onAction="#btnInicioAction" alignment="CENTER" prefWidth="500000.0" styleClass="nav-button-des" text="Inicio">
                <VBox.margin>
                <Insets bottom="7.0" />
             </VBox.margin>
@@ -51,7 +51,7 @@
             </graphic>
          </Button>
 
-           <Button fx:id="btnTiendas" onAction="#btnTiendasAction" prefWidth="100000.0" styleClass="nav-button-des" text="Tiendas">
+           <Button fx:id="btnTiendas" onAction="#btnTiendasAction" prefWidth="100000.0" styleClass="nav-button-sel" text="Tiendas">
                <VBox.margin>
                    <Insets bottom="7.0" />
                </VBox.margin>
@@ -101,7 +101,7 @@
        <VBox maxWidth="-Infinity" minHeight="-Infinity" prefWidth="700.0" HBox.hgrow="ALWAYS">
            <!-- Barra de búsqueda -->
            <HBox alignment="TOP_CENTER" style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
-               <TextField fx:id="barraBusqueda" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Buscar productos..." style="-fx-background-radius: 15; -fx-pref-width: 300;" HBox.hgrow="ALWAYS">
+               <TextField fx:id="barraBusqueda" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Buscar comercios..." style="-fx-background-radius: 15; -fx-pref-width: 300;" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="18.0" />
                </font></TextField>
@@ -132,10 +132,10 @@
             </children>
          </VBox>
 
-           <!-- Lista de productos adaptativa -->
-           <ScrollPane fx:id="scrollPaneProductos" fitToWidth="true" style="-fx-background: #ffffff;" VBox.vgrow="ALWAYS" pannable="true">
-               <FlowPane fx:id="productosContainer" alignment="TOP_LEFT" hgap="20" vgap="20" prefWrapLength="Infinity" maxHeight="-1">
-               <!-- Los productos se añadirán dinámicamente desde el controlador -->
+           <!-- Lista de comercios adaptativa -->
+           <ScrollPane fx:id="scrollPaneComercios" fitToWidth="true" pannable="true" style="-fx-background: #ffffff;" VBox.vgrow="ALWAYS">
+               <FlowPane fx:id="comerciosContainer" alignment="TOP_LEFT" hgap="20" maxHeight="-1" prefWrapLength="Infinity" vgap="20">
+               <!-- Los comercios se añadirán dinámicamente desde el controlador -->
            </FlowPane>
        </ScrollPane>
 

@@ -12,11 +12,11 @@ public class productoFavorito {
     private int idProductoFavorito;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario", nullable = false)
+    @JoinColumn(name = "usuario", nullable = false)
     private usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idProducto", nullable = false)
+    @JoinColumn(name = "producto", nullable = false)
     private producto producto;
 
     // Getters y setters

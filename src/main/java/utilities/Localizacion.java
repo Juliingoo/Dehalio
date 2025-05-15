@@ -7,8 +7,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
 public class Localizacion {
     public static double[] obtenerCoordenadasUsuario() {
+        System.out.println(LogAdministrador.inicioInfoLogConsola() + "Obteniendo coordenadas del usuario");
+        LogAdministrador.escribirLogInfo("Obteniendo coordenadas del usuario");
         try {
             URL url = new URL("http://ip-api.com/json/");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -21,12 +24,15 @@ public class Localizacion {
             double lon = json.get("lon").getAsDouble();
             return new double[]{lat, lon};
         } catch (Exception e) {
-            e.printStackTrace();
+            LogAdministrador.escribirLogError("Error al obtener coordenadas del usuario");
+            System.out.println(LogAdministrador.inicioErrorLogConsola() + "Error al obtener coordenadas del usuario: " + e.getMessage());
             return null;
         }
     }
 
     public static double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
+        System.out.println(LogAdministrador.inicioInfoLogConsola() + "Calculando distancia");
+        LogAdministrador.escribirLogInfo("Calculando distancia");
         double radioTierra = 6371; // km
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);

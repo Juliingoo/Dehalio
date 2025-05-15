@@ -1,5 +1,6 @@
 package controllers;
 
+import database.Sesion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -10,12 +11,14 @@ import javafx.stage.Stage;
 import model.usuario;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import utilities.LogAdministrador;
 import utilities.Paths;
 
 import java.util.List;
 
-import static database.Sesion.newSession;
+import static database.Sesion.*;
 import static utilities.Encriptacion.encriptarMD5;
+import static utilities.LogAdministrador.*;
 
 
 public class INIController {
@@ -24,17 +27,13 @@ public class INIController {
     private TextField emailCampo;
     @FXML
     private TextField contraseniaCampo;
-    @FXML
-    private Button iniciarSesionBtn;
-    @FXML
-    private Button registarseBtn;
-
 
     Session session = newSession();
 
     @FXML
     void iniciarSesionAction(ActionEvent event){
-        System.out.println("Iniciar sesión pulsado");
+        System.out.println(inicioInfoLogConsola() + "Iniciar sesión pulsado");
+        escribirLogInfo("Iniciar sesion pulsado");
         String email = emailCampo.getText();
         String contrasenia = contraseniaCampo.getText();
 
@@ -45,8 +44,11 @@ public class INIController {
         List<usuario> usuarioBuscadoLista = qUsuario.getResultList();
 
         if (!usuarioBuscadoLista.isEmpty()){
-            System.out.println("Usuario encontrado");
-            System.out.println("Nombre: " + usuarioBuscadoLista.getFirst().getNombre());
+            usuario = usuarioBuscadoLista.getFirst();
+            System.out.println(inicioInfoLogConsola() + "Usuario encontrado");
+            System.out.println(inicioInfoLogConsola() + "Nombre: " + usuario.getNombre());
+            escribirLogInfo("Usuario encontrado");
+            escribirLogInfo("Nombre: " + usuario.getNombre());
 
             if(usuarioBuscadoLista.getFirst().isPropietario()){
                 System.out.println("En construcción");
@@ -56,20 +58,17 @@ public class INIController {
             }
 
         } else {
-            System.out.println("Lista vacia");
+            System.out.println(inicioInfoLogConsola() + "Lista vacia. Usuario no encontrado");
         }
 
     }
 
     @FXML
     void registrarseAction(ActionEvent event) throws Exception{
-        System.out.println("Registrarse pulsado");
+        System.out.println(inicioInfoLogConsola() + "Registrarse pulsado");
+        escribirLogInfo("Registrarse pulsado");
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        NavegacionController.navegar(stage, Paths.REG);
         NavegacionController.navegarConCarga(event, stage, Paths.REG);
     }
-
-
-
 
 }

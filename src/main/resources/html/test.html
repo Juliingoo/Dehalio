@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mapa prueba</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <style>
+    #map {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+  <script>
+    function initMap() {
+      const coords = { lat: 37.883246, lng: -4.788189 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: coords,
+        zoom: 15
+      });
+      new google.maps.Marker({
+        position: coords,
+        map: map
+      });
+    }
+  </script>
+  <script async
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASimwN4ae54xYs6JV1yYnEj8eD_wc7hwk&callback=initMap">
+  </script>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>

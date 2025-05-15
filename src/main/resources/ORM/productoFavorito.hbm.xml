@@ -17,8 +17,8 @@
             <generator class="increment"/>
         </id>
 
-        <many-to-one name="usuario" class="model.usuario" column="idUsuario" not-null="true"/>
-        <many-to-one name="producto" class="model.producto" column="idProducto" not-null="true"/>
+        <many-to-one name="usuario" class="model.usuario" column="usuario" not-null="true"/>
+        <many-to-one name="producto" class="model.producto" column="producto" not-null="true"/>
 
     </class>
 

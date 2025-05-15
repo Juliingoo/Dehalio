@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <style>
+        #map {
+          height: 100%;
+          width: 100%;
+        }
+        html, body {
+          margin: 0;
+          height: 100%;
+        }
+    </style>
+    <script>
+        let map;
+        function initMap() {
+          const coords = { lat: 37.8806571, lng: -4.7913827 };
+          map = new google.maps.Map(document.getElementById("map"), {
+            center: coords,
+            zoom: 15,
+          });
+          new google.maps.Marker({
+            position: coords,
+            map,
+            title: "Ubicación del producto",
+          });
+        }
+    </script>
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASimwN4ae54xYs6JV1yYnEj8eD_wc7hwk&callback=initMap">
+    </script>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>

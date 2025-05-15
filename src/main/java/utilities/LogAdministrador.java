@@ -12,10 +12,20 @@ import java.util.Date;
 public class LogAdministrador {
     static String rutaDirectorioLogs = Paths.get(System.getProperty("user.dir"), "logs").toString();
 
-    static Date date = new Date();
-    static DateFormat fechaHora = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
+    private static Date date;
+    private static DateFormat fechaHora = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
 
     static BufferedWriter writerLog;
+
+    public static String inicioInfoLogConsola(){
+        date = new Date();
+        return fechaHora.format(date) + " - INFO - ";
+    }
+
+    public static String inicioErrorLogConsola(){
+        date = new Date();
+        return fechaHora.format(date) + " - ERROR - ";
+    }
 
     public static void comprobarDirectorioLogs(){
         File directorio = new File(rutaDirectorioLogs);
@@ -35,7 +45,7 @@ public class LogAdministrador {
                 System.out.println("Error al crear el directorio de logs: " + e.getMessage());
             }
         } else {
-            System.out.println(fechaHora.format(date) + " - El directorio Logs existe");
+            System.out.println(inicioInfoLogConsola() + "El directorio Logs existe");
             iniciarLogs();
         }
     }
@@ -45,14 +55,14 @@ public class LogAdministrador {
             try {
                 writerLog = new BufferedWriter(new FileWriter(rutaDirectorioLogs + "\\Log_" + fechaHora.format(date) + ".log"));
             } catch (IOException e) {
-                // Maneja cualquier excepción que ocurra al crear el writer del log
-                throw new RuntimeException("Error al crear el writer del log", e);
+                System.out.println(inicioErrorLogConsola() + "Error al iniciar los logs: " + e.getMessage());
             }
         }
     }
 
     public static void escribirLogError(String traza) {
         File directorioLogs = new File(rutaDirectorioLogs);
+
         if (!directorioLogs.exists() || !directorioLogs.isDirectory()) {
             directorioLogs.mkdirs();
         }
@@ -61,11 +71,10 @@ public class LogAdministrador {
         DateFormat fechaHora = new SimpleDateFormat("HH:mm:ss");
 
         try {
-            writerLog.write(fechaHora.format(fecha) + " - " + "ERROR" + " - " + traza + "\n");
+            writerLog.write(inicioErrorLogConsola() + traza + "\n");
             writerLog.flush();
         } catch (IOException e) {
-            // Maneja cualquier excepción que ocurra al escribir en el log
-            System.out.println("Error entrada/salida: " + e.getMessage());
+            System.out.println(inicioErrorLogConsola() + "Error entrada/salida: " + e.getMessage());
         }
     }
 
@@ -79,11 +88,11 @@ public class LogAdministrador {
         DateFormat fechaHora = new SimpleDateFormat("HH:mm:ss");
 
         try {
-            writerLog.write(fechaHora.format(fecha) + " - " + "INFO" + " - " + traza + "\n");
+            writerLog.write(inicioInfoLogConsola() + traza + "\n");
             writerLog.flush();
         } catch (IOException e) {
             // Maneja cualquier excepción que ocurra al escribir en el log
-            System.out.println("Error entrada/salida: " + e.getMessage());
+            System.out.println(inicioErrorLogConsola() + "Error entrada/salida: " + e.getMessage());
         }
     }
 }

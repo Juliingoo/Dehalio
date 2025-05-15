@@ -10,10 +10,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.usuario;
+import utilities.LogAdministrador;
 import utilities.Paths;
+import utilities.LogAdministrador.*;
 
 import java.io.IOException;
 import java.util.Stack;
+
+import static utilities.LogAdministrador.escribirLogError;
+import static utilities.LogAdministrador.inicioErrorLogConsola;
 
 public class NavegacionController {
     private static Stack<Scene> historialEscenas = new Stack<>();
@@ -27,6 +33,7 @@ public class NavegacionController {
         //Carga nueva escena
         Parent root = FXMLLoader.load(NavegacionController.class.getResource(fxmlPath));
         stage.setScene(new Scene(root));
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -65,7 +72,8 @@ public class NavegacionController {
             try {
                 NavegacionController.navegar(stage, fxmlPath);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println(inicioErrorLogConsola() + "Error: " + ex.getMessage());
+                escribirLogError("Error: " + ex.getMessage());
             }
         });
 
