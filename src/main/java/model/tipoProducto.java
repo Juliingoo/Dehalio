@@ -14,12 +14,12 @@ public class tipoProducto {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "descripcion", length = 255)
-    private String descripcion;
+    @Column(name = "imagenBase")
+    private byte[] imagenBase;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idCategoriaTipoProducto", nullable = false)
-    private categoriaTipoProducto categoriaTipoProducto;
+    private categoriaTipoProducto categoria;
 
     // Getters y setters
 
@@ -39,19 +39,19 @@ public class tipoProducto {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public categoriaTipoProducto getCategoria() {
+        return categoria;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCategoria(categoriaTipoProducto categoria) {
+        this.categoria = categoria;
     }
 
-    public categoriaTipoProducto getCategoriaTipoProducto() {
-        return categoriaTipoProducto;
+    public byte[] getImagenBase() {
+        return imagenBase;
     }
 
-    public void setCategoriaTipoProducto(categoriaTipoProducto categoriaTipoProducto) {
-        this.categoriaTipoProducto = categoriaTipoProducto;
+    public void setImagenBase(byte[] imagenBase) {
+        this.imagenBase = imagenBase;
     }
 }

@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.comercio;
 import model.usuario;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -45,6 +46,22 @@ public class INIController {
 
         if (!usuarioBuscadoLista.isEmpty()){
             usuario = usuarioBuscadoLista.getFirst();
+
+            if (usuario.isPropietario()) {
+                Query<comercio> qComercio = session.createQuery("from comercio where propietario = :usuarioId");
+                qComercio.setParameter("usuarioId", usuario.getIdUsuario());
+                List<comercio> comercioLista = qComercio.getResultList();
+
+                if (!comercioLista.isEmpty()) {
+                    comercio = comercioLista.getFirst();
+                    System.out.println(inicioInfoLogConsola() + "Comercio asociado encontrado: " + comercio.getNombre());
+                    escribirLogInfo("Comercio asociado encontrado: " + comercio.getNombre());
+                } else {
+                    System.out.println(inicioInfoLogConsola() + "No se encontró un comercio asociado para el usuario propietario.");
+                    escribirLogInfo("No se encontró un comercio asociado para el usuario propietario.");
+                }
+            }
+
             System.out.println(inicioInfoLogConsola() + "Usuario encontrado");
             System.out.println(inicioInfoLogConsola() + "Nombre: " + usuario.getNombre());
             escribirLogInfo("Usuario encontrado");

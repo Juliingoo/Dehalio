@@ -6,6 +6,7 @@ import com.gluonhq.maps.MapView;
 import database.Sesion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,8 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.comercio;
-import model.comercio;
-import model.productoFavorito;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import utilities.Localizacion;
@@ -60,6 +59,9 @@ public class PRI_TIENController implements Initializable{
     private TextField barraBusqueda;
 
     @FXML
+    private ComboBox<String> filtroComboBox;
+
+    @FXML
     private Button btnBuscar;
 
     @FXML
@@ -74,9 +76,11 @@ public class PRI_TIENController implements Initializable{
     @FXML
     private VBox mapVBox;
 
-    MapView mapView = new MapView();
+    private final MapView mapView = new MapView();
 
-    private MapLayer marcadorcomercioLayer = new MapLayer();
+    private final MapLayer marcadorcomercioLayer = new MapLayer();
+
+    private final int limiteResultados = 1000;
 
     double[] coordsUsuario = Localizacion.obtenerCoordenadasUsuario();
     double latUsuario = coordsUsuario[0];
@@ -86,7 +90,17 @@ public class PRI_TIENController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println(inicioInfoLogConsola() + "Inicializando pantalla principal. Recuperando comercios");
         escribirLogInfo("Inicializando pantalla principal. Recuperando comercios.");
+
+        filtroComboBox.setOnAction(event -> buscar());
+        kmSlider.setOnMouseClicked(event -> buscar());
+        barraBusqueda.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                buscar();
+            }
+        });
+
         Query<comercio> qComercio = session.createQuery("from comercio");
+        qComercio.setMaxResults(limiteResultados);
         List<comercio> listaComercios = qComercio.getResultList();
         cargarComercios(getComerciosFiltradosCercania(listaComercios));
         cargarMapa();
@@ -121,7 +135,7 @@ public class PRI_TIENController implements Initializable{
         escribirLogInfo("Boton favoritos pulsado");
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            NavegacionController.navegar(stage, Paths.PRI_TIEN);
+            NavegacionController.navegar(stage, Paths.PRI_FAV);
         } catch (IOException e) {
             System.out.println("Error al navegar a favoritos: " + e.getMessage());
             escribirLogError("Error al navegar a favoritos: " + e.getMessage());
@@ -144,14 +158,7 @@ public class PRI_TIENController implements Initializable{
     public void btnBuscarAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton buscar pulsado");
         escribirLogInfo("Boton buscar pulsado");
-
-        String criterioBusqueda = barraBusqueda.getText();
-
-        // Buscar comercios cuyo nombre coincida
-        Query<comercio> qComercio = session.createQuery("FROM comercio WHERE nombre LIKE :criterio", comercio.class);
-        qComercio.setParameter("criterio", "%" + criterioBusqueda + "%");
-
-        cargarComercios(getComerciosFiltradosCercania(qComercio.getResultList()));
+        buscar();
     }
 
     public List<comercio> getComerciosFiltradosCercania(List<comercio> listaComerciosSinFiltrar){
@@ -178,55 +185,51 @@ public class PRI_TIENController implements Initializable{
         return comerciosFiltrados;
     }
 
+    private void buscar() {
+        String filtroSeleccionado = filtroComboBox.getValue();
+
+        String criterioBusqueda = barraBusqueda.getText();
+
+        // Buscar comercios cuyo nombre coincida
+        Query<comercio> qComercio = session.createQuery("FROM comercio WHERE nombre LIKE :criterio", comercio.class);
+        qComercio.setParameter("criterio", "%" + criterioBusqueda + "%");
+
+        List<comercio> listaComercio = qComercio.getResultList();
+
+        if (filtroSeleccionado == null || filtroSeleccionado.isEmpty()) {
+            // Si no hay filtro seleccionado, aplicar solo el filtro de cercanía
+            cargarComercios(getComerciosFiltradosCercania(listaComercio));
+            return;
+        }
+
+        switch (filtroSeleccionado) {
+            case "Nombre":
+                listaComercio.sort((c1, c2) -> c1.getNombre().compareToIgnoreCase(c2.getNombre()));
+                break;
+            default:
+                cargarComercios(getComerciosFiltradosCercania(listaComercio));
+                break;
+        }
+        cargarComercios(getComerciosFiltradosCercania(listaComercio));
+    }
+
     private void cargarComercios(List<comercio> listaComercios) {
         escribirLogInfo("Cargando lista de tiendas");
         comerciosContainer.getChildren().clear();
 
         for (comercio comercio : listaComercios) {
-            // Crear contenedor principal tipo VBox (tarjeta vertical)
-            VBox tarjetaComercio = new VBox();
-            tarjetaComercio.setSpacing(8);
-            tarjetaComercio.setPadding(new Insets(10));
-            tarjetaComercio.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; " +
-                    "-fx-border-radius: 10; -fx-border-color: #ddd; " +
-                    "-fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);");
-            tarjetaComercio.setPrefWidth(300);
-            tarjetaComercio.setPrefHeight(100);
-
-            // Imagen del comercio
-            byte[] imagenComercio = comercio.getImagen();
-            Image img;
-
-            if (imagenComercio != null && imagenComercio.length > 0) {
-                img = new Image(new ByteArrayInputStream(imagenComercio));
-            } else {
-                img = new Image(getClass().getResourceAsStream("/iconos/comercioSinImagen.png"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/TarjetaComercio.fxml"));
+            VBox tarjetaComercio = null;
+            try {
+                tarjetaComercio = loader.load();
+            } catch (IOException e) {
+                System.out.println(inicioErrorLogConsola() + "Error al cargar la tarjeta de comercio: " + e.getMessage());
+                escribirLogError("Error al cargar la tarjeta de comercio: " + e.getMessage());
             }
 
-            ImageView imageView = new ImageView(img);
-            imageView.setFitWidth(100);
-            imageView.setPreserveRatio(true);
-            tarjetaComercio.getChildren().add(imageView);
-
-
-            // Nombre del comercio
-            Label labelNombre = new Label(comercio.getNombre());
-            labelNombre.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-
-            //Direccion del comercio
-            Label labelDireccion = new Label(comercio.getDireccion());
-            labelDireccion.setStyle("-fx-font-size: 12; -fx-text-fill: #757575");
-
-            tarjetaComercio.getChildren().addAll(labelNombre, labelDireccion);
-
-            // Cambiar estilo al pasar el ratón por encima
-            tarjetaComercio.setOnMouseEntered(event -> tarjetaComercio.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);"));
-
-            // Restaurar estilo al salir el ratón
-            tarjetaComercio.setOnMouseExited(event -> tarjetaComercio.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"));
-
-            // Cambiar estilo al pulsar
-            tarjetaComercio.setOnMousePressed(event -> tarjetaComercio.setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);"));
+            // Obtener el controlador de la tarjeta y configurar los datos
+            TarjetaComercioController controller = loader.getController();
+            controller.setComercio(comercio);
 
             // Evento de clic para mostrar las coordenadas en el mapa
             tarjetaComercio.setOnMouseClicked(event -> {
@@ -294,6 +297,12 @@ public class PRI_TIENController implements Initializable{
 
         // Botón para abrir Google Maps
         Button abrirEnMapsBtn = new Button("Ver en Google Maps");
+        abrirEnMapsBtn.setStyle("-fx-background-color: #de4733;" +
+                "    -fx-text-fill: #FFFFFF;" +
+                "    -fx-font-size: 18px;" +
+                "    -fx-font-weight: bold;" +
+                "    -fx-alignment: center;" +
+                "    -fx-background-radius: 15;");
         abrirEnMapsBtn.setOnAction(e -> {
             String url = "https://www.google.com/maps?q=" + coordenadas;
             abrirEnNavegador(url);

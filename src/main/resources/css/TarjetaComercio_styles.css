@@ -1,0 +1,54 @@
+/* Default style for the card */
+.tarjetaComercios {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #ddd;
+    -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.1), 4, 0, 0, 2);
+    -fx-padding: 10;
+    -fx-spacing: 8;
+}
+
+.tarjetaComercios:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #ddd;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+.tarjetaComercios:pressed {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #ddd;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);
+}
+
+.visitarTienda-button {
+    -fx-background-color: linear-gradient(to bottom, #81C784, #66BB6A);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15px;
+    -fx-font-weight: normal;
+    -fx-alignment: center;
+    -fx-background-radius: 15;
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 1;
+    -fx-border-radius: 15;
+    -fx-padding: 8 18;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 3, 0, 0, 1);
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.visitarTienda-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #A5D6A7, #81C784);
+    -fx-border-color: #388E3C;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 0, 2);
+}
+
+.visitarTienda-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #66BB6A, #4CAF50);
+    -fx-border-color: #2E7D32;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
+}

@@ -8,6 +8,7 @@ import database.Sesion;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -53,16 +54,10 @@ public class PRI_INIController implements Initializable{
     Session session = newSession();
 
     @FXML
-    private Button btnInicio;
-
-    @FXML
-    private Button btnNegocios;
-
-    @FXML
     private TextField barraBusqueda;
 
     @FXML
-    private Button btnBuscar;
+    private ComboBox<String> filtroComboBox;
 
     @FXML
     private ScrollPane scrollPaneProductos;
@@ -76,9 +71,11 @@ public class PRI_INIController implements Initializable{
     @FXML
     private VBox mapVBox;
 
-    MapView mapView = new MapView();
+    private final MapView mapView = new MapView();
 
-    private MapLayer marcadorProductoLayer = new MapLayer();
+    private final MapLayer marcadorProductoLayer = new MapLayer();
+
+    private final int limiteResultados = 1000;
 
     double[] coordsUsuario = Localizacion.obtenerCoordenadasUsuario();
     double latUsuario = coordsUsuario[0];
@@ -88,8 +85,19 @@ public class PRI_INIController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println(inicioInfoLogConsola() + "Inicializando pantalla principal. Recuperando productos");
         escribirLogInfo("Inicializando pantalla principal. Recuperando productos.");
+
+        filtroComboBox.setOnAction(event -> buscar());
+        kmSlider.setOnMouseClicked(event -> buscar());
+        barraBusqueda.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                buscar();
+            }
+        });
+
         Query<producto> qProducto = session.createQuery("from producto");
+        qProducto.setMaxResults(limiteResultados);
         List<producto> listaProducto = qProducto.getResultList();
+
         cargarProductos(getProductosFiltradosCercania(listaProducto));
         cargarMapa();
     }
@@ -123,7 +131,7 @@ public class PRI_INIController implements Initializable{
         escribirLogInfo("Boton favoritos pulsado");
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            NavegacionController.navegar(stage, Paths.PRI_TIEN);
+            NavegacionController.navegar(stage, Paths.PRI_FAV);
         } catch (IOException e) {
             System.out.println("Error al navegar a favoritos: " + e.getMessage());
             escribirLogError("Error al navegar a favoritos: " + e.getMessage());
@@ -146,14 +154,7 @@ public class PRI_INIController implements Initializable{
     public void btnBuscarAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton buscar pulsado");
         escribirLogInfo("Boton buscar pulsado");
-
-        String criterioBusqueda = barraBusqueda.getText();
-
-        // Buscar productos cuyo nombre coincida
-        Query<producto> qProducto = session.createQuery("FROM producto WHERE nombre LIKE :criterio", producto.class);
-        qProducto.setParameter("criterio", "%" + criterioBusqueda + "%");
-
-        cargarProductos(getProductosFiltradosCercania(qProducto.getResultList()));
+        buscar();
     }
 
     public List<producto> getProductosFiltradosCercania(List<producto> listaProductosSinFiltrar){
@@ -181,102 +182,59 @@ public class PRI_INIController implements Initializable{
         return productosFiltrados;
     }
 
+    private void buscar() {
+        String filtroSeleccionado = filtroComboBox.getValue();
+
+        String criterioBusqueda = barraBusqueda.getText();
+
+        // Buscar productos cuyo nombre coincida
+        Query<producto> qProducto = session.createQuery("FROM producto WHERE nombre LIKE :criterio", producto.class);
+        qProducto.setMaxResults(limiteResultados);
+        qProducto.setParameter("criterio", "%" + criterioBusqueda + "%");
+
+        List<producto> listaProducto = qProducto.getResultList();
+
+        if (filtroSeleccionado == null || filtroSeleccionado.isEmpty()) {
+            // Si no hay filtro seleccionado, aplicar solo el filtro de cercanía
+            cargarProductos(getProductosFiltradosCercania(listaProducto));
+            return;
+        }
+
+        switch (filtroSeleccionado) {
+            case "Precio Ascendente":
+                listaProducto.sort((p1, p2) -> Double.compare(p1.getPrecio(), p2.getPrecio()));
+                break;
+            case "Precio Descendente":
+                listaProducto.sort((p1, p2) -> Double.compare(p2.getPrecio(), p1.getPrecio()));
+                break;
+            case "Nombre":
+                listaProducto.sort((p1, p2) -> p1.getNombre().compareToIgnoreCase(p2.getNombre()));
+                break;
+            default:
+                cargarProductos(getProductosFiltradosCercania(listaProducto));
+                break;
+        }
+        cargarProductos(getProductosFiltradosCercania(listaProducto));
+    }
+
     private void cargarProductos(List<producto> listaProductos) {
         escribirLogInfo("Cargando lista de productos");
         productosContainer.getChildren().clear();
 
         for (producto producto : listaProductos) {
             // Crear contenedor principal tipo VBox (tarjeta vertical)
-            VBox tarjetaProducto = new VBox();
-            tarjetaProducto.setSpacing(8);
-            tarjetaProducto.setPadding(new Insets(10));
-            tarjetaProducto.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; " +
-                    "-fx-border-radius: 10; -fx-border-color: #ddd; " +
-                    "-fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);");
-            tarjetaProducto.setPrefWidth(300);
-            tarjetaProducto.setPrefHeight(100);
-
-            // Imagen del producto
-            byte[] imagenProducto = producto.getImagen();
-            Image img;
-
-            if (imagenProducto != null && imagenProducto.length > 0) {
-                img = new Image(new ByteArrayInputStream(imagenProducto));
-            } else {
-                img = new Image(getClass().getResourceAsStream("/iconos/productoSinImagen.png"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/TarjetaProducto.fxml"));
+            VBox tarjetaProducto = null;
+            try {
+                tarjetaProducto = loader.load();
+            } catch (IOException e) {
+                System.out.println(inicioErrorLogConsola() + "Error al cargar la tarjeta de comercio: " + e.getMessage());
+                escribirLogError("Error al cargar la tarjeta de comercio: " + e.getMessage());
             }
 
-            ImageView imageView = new ImageView(img);
-            imageView.setFitWidth(100);
-            imageView.setPreserveRatio(true);
-            tarjetaProducto.getChildren().add(imageView);
-
-
-            // Nombre del producto
-            Label labelNombre = new Label(producto.getNombre());
-            labelNombre.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-
-            // Precio
-            Label labelPrecio = new Label(String.format("%.2f €", producto.getPrecio()));
-            labelPrecio.setStyle("-fx-font-size: 14px; -fx-text-fill: #e53935;");
-
-            // Comercio asociado (asegúrate de que producto.getComercio() no sea null)
-            String nombreComercio = producto.getComercio() != null ? producto.getComercio().getNombre() : "Sin comercio";
-            Label labelComercio = new Label("Comercio: " + nombreComercio);
-            labelComercio.setStyle("-fx-font-size: 12px; -fx-text-fill: #757575;");
-
-            // Botón de favorito
-            Button btnFavorito = new Button();
-            btnFavorito.setStyle("""
-            -fx-background-color: #e53935;
-            -fx-background-radius: 50%;
-            -fx-padding: 8;
-            -fx-cursor: hand;
-        """);
-
-            // Imagen corazón
-            ImageView iconoCorazon = new ImageView(new Image(getClass().getResourceAsStream("/iconos/corazonBlanco.png")));
-            iconoCorazon.setFitWidth(16);
-            iconoCorazon.setFitHeight(16);
-            btnFavorito.setGraphic(iconoCorazon);
-
-            btnFavorito.setOnMousePressed(event -> btnFavorito.setStyle("""
-            -fx-background-color: #ab2e2b;
-            -fx-background-radius: 50%;
-            -fx-padding: 8;
-            -fx-cursor: hand;
-              """));
-
-            btnFavorito.setOnMouseReleased(event -> btnFavorito.setStyle("""
-            -fx-background-color: #e53935;
-            -fx-background-radius: 50%;
-            -fx-padding: 8;
-            -fx-cursor: hand;
-              """));
-
-            // Acción al hacer clic
-            btnFavorito.setOnAction(e -> {
-                productoFavorito productoFavorito = new productoFavorito();
-                productoFavorito.setProducto(producto);
-                productoFavorito.setUsuario(Sesion.usuario);
-                session.beginTransaction();
-                session.save(productoFavorito);
-                session.getTransaction().commit();
-            });
-
-            // Contenedor horizontal inferior con botón
-            HBox hBoxInferior = new HBox(btnFavorito);
-            hBoxInferior.setAlignment(Pos.CENTER_RIGHT);
-            tarjetaProducto.getChildren().addAll(labelNombre, labelPrecio, labelComercio, hBoxInferior);
-
-            // Cambiar estilo al pasar el ratón por encima
-            tarjetaProducto.setOnMouseEntered(event -> tarjetaProducto.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);"));
-
-            // Restaurar estilo al salir el ratón
-            tarjetaProducto.setOnMouseExited(event -> tarjetaProducto.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"));
-
-            // Cambiar estilo al pulsar
-            tarjetaProducto.setOnMousePressed(event -> tarjetaProducto.setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);"));
+            // Obtener el controlador de la tarjeta y configurar los datos
+            TarjetaProductoController controller = loader.getController();
+            controller.setProducto(producto);
 
             // Evento de clic para mostrar las coordenadas en el mapa
             tarjetaProducto.setOnMouseClicked(event -> {
@@ -344,6 +302,13 @@ public class PRI_INIController implements Initializable{
 
         // Botón para abrir Google Maps
         Button abrirEnMapsBtn = new Button("Ver en Google Maps");
+        abrirEnMapsBtn.setStyle("-fx-background-color: #de4733;" +
+                "    -fx-text-fill: #FFFFFF;" +
+                "    -fx-font-size: 18px;" +
+                "    -fx-font-weight: bold;" +
+                "    -fx-alignment: center;" +
+                "    -fx-background-radius: 15;");
+
         abrirEnMapsBtn.setOnAction(e -> {
             String url = "https://www.google.com/maps?q=" + coordenadas;
             abrirEnNavegador(url);

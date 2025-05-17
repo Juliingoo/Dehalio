@@ -1,0 +1,52 @@
+/* Botones de navegación */
+.nav-button-sel {
+    -fx-background-color: #fde8e5;
+    -fx-text-fill: #565557;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-radius: 5;
+}
+
+.nav-button-sel:hover {
+    -fx-background-color: #e87d6f;
+}
+
+.nav-button-sel:pressed {
+    -fx-background-color: #c44536;
+}
+
+.nav-button-des {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #565557;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-radius: 5;
+}
+
+.nav-button-des:hover {
+    -fx-background-color: #fde8e5;
+}
+
+.nav-button-des:pressed {
+    -fx-background-color: #c44536;
+
+}
+
+.buscar-button {
+    -fx-background-color: #de4733;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-radius: 15;
+}
+
+.buscar-button:hover {
+    -fx-background-color: #de3822;
+}
+
+.buscar-button:pressed {
+    -fx-background-color: #c44536;
+}

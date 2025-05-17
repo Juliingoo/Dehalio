@@ -1,0 +1,52 @@
+/* Default style for the product card */
+.tarjetaProducto {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #ddd;
+    -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.1), 4, 0, 0, 2);
+}
+
+/* Hover effect */
+.tarjetaProducto:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.tarjetaProducto:pressed {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #ddd;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 2);
+}
+
+/* Product name style */
+.nombreProducto {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Product price style */
+.precioProducto {
+    -fx-font-size: 14px;
+    -fx-text-fill: #e53935;
+}
+
+/* Product store style */
+.comercioProducto {
+    -fx-font-size: 12px;
+    -fx-text-fill: #757575;
+}
+
+/* Favorite button style */
+.botonFavorito {
+    -fx-background-color: #e53935;
+    -fx-background-radius: 50%;
+    -fx-padding: 8;
+    -fx-cursor: hand;
+}
+
+.botonFavorito:pressed {
+    -fx-background-color: #ab2e2b;
+}

@@ -1,5 +1,6 @@
 package database;
 
+import model.comercio;
 import model.usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,6 +18,7 @@ public class Sesion {
     // Permitir acceso directo mediante getters y setters podría generar problemas de concurrencia o inconsistencias,
     // ya que múltiples hilos podrían modificar o acceder a esta variable de manera no controlada.
     public static usuario usuario;
+    public static comercio comercio;
 
     static {
         try {
