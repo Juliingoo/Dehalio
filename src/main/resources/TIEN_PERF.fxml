@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -112,10 +113,10 @@
             <VBox>
                <children>
                       <!-- Nombre de la tienda -->
-                      <Text fx:id="nombreTienda" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Nombre de la Tienda" />
+                      <Text fx:id="nombreTienda" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Nombre del comercio" />
       
                       <!-- Dirección de la tienda -->
-                      <Text fx:id="direccionTienda" style="-fx-font-size: 16px;" text="Dirección de la Tienda" />
+                      <Text fx:id="direccionTienda" style="-fx-font-size: 16px;" text="Dirección del comercio" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" left="20.0" top="10.0" />
@@ -178,7 +179,7 @@
                 <!-- Contenedor de información del producto -->
                 <VBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 10;">
                     <!-- Nombre del producto -->
-                    <Text fx:id="nombreProducto" text="Nombre del Producto" wrappingWidth="250.0">
+                    <Text fx:id="nombreProducto" fill="#393939" text="Nombre del Producto" wrappingWidth="250.0">
                   <font>
                      <Font name="System Bold" size="37.0" />
                   </font></Text>
@@ -191,7 +192,7 @@
                      </Text>
       
                           <!-- Tipo del producto -->
-                          <Text fx:id="tipoProducto" text="Tipo del Producto" wrappingWidth="250.0">
+                          <Text fx:id="tipoProducto" wrappingWidth="250.0">
                         <font>
                            <Font size="24.0" />
                         </font></Text>
@@ -206,13 +207,35 @@
                      </Text>
       
                           <!-- Categoría del producto -->
-                          <Text fx:id="categoriaProducto" text="Categoría del Producto" wrappingWidth="250.0">
+                          <Text fx:id="categoriaProducto" wrappingWidth="250.0">
                         <font>
                            <Font size="24.0" />
                         </font></Text>
                   </children>
                </HBox>
                 </VBox>
+            <Separator prefWidth="200.0" />
+                <VBox fx:id="vboxValoraciones" prefHeight="200.0" prefWidth="100.0" styleClass="valoraciones-box">
+               <children>
+                   <Text fill="#323232" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titulo-valoracion" text="Valoración del comercio" textAlignment="CENTER" wrappingWidth="289.962890625" VBox.vgrow="ALWAYS" />
+                   <ComboBox fx:id="valoracionComboBox" prefWidth="150.0" promptText="Estrellas" styleClass="combo-valoracion">
+                   <items>
+                       <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="⭐" />
+                           <String fx:value="⭐⭐" />
+                           <String fx:value="⭐⭐⭐" />
+                           <String fx:value="⭐⭐⭐⭐" />
+                           <String fx:value="⭐⭐⭐⭐⭐" />
+                       </FXCollections>
+                   </items>
+                  </ComboBox>
+                   <Button fx:id="aceptarValoracionBtn" onAction="#confirmarValoracion" styleClass="btn-valoracion" text="Aceptar" />
+                   <Text fx:id="mediaValoracionesText" styleClass="media-texto" text="Media de valoraciones" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </VBox>
             </children>
         </VBox>
     </children>

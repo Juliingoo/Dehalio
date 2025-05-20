@@ -2,6 +2,8 @@ package model;
 
 import jakarta.persistence.*;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name = "producto")
 public class producto {
@@ -14,21 +16,22 @@ public class producto {
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
-    @Column(name = "imagen")
+    @Lob
+    @Column(name = "imagen", columnDefinition="BLOB")
     private byte[] imagen;
 
     @Column(name = "precio")
     private double precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "idTipoPrecio", nullable = false)
     private tipoPrecio tipoPrecio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "idComercio", nullable = false)
     private comercio comercio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "idTipoProducto")
     private tipoProducto tipo;
 

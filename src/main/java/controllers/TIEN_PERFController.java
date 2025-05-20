@@ -5,31 +5,32 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.categoriaTipoProducto;
-import model.comercio;
-import model.producto;
+import model.*;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import utilities.LogAdministrador;
 import utilities.Paths;
 
-import javax.management.Query;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import static controllers.NavegacionController.mostrarError;
+import static controllers.NavegacionController.mostrarInformacion;
 import static database.Sesion.newSession;
+import static database.Sesion.usuario;
+import static utilities.LogAdministrador.*;
+import static utilities.LogAdministrador.escribirLogError;
 
 public class TIEN_PERFController implements Initializable {
 
@@ -66,6 +67,17 @@ public class TIEN_PERFController implements Initializable {
     @FXML
     private Text direccionTienda;
 
+    @FXML
+    private ComboBox<String> valoracionComboBox;
+
+    @FXML
+    private Text mediaValoracionesText;
+
+    @FXML
+    private Button aceptarValoracionBtn;
+
+    private double averageRating = 0.0;
+
     private final int limiteResultados = 1000;
 
     private comercio comercioActual;
@@ -83,23 +95,57 @@ public class TIEN_PERFController implements Initializable {
             }
         });
 
+
+
         cargarProductos();
     }
 
     public void btnInicioAction(ActionEvent event) {
-        navegar(event, Paths.PRI_INI);
+        System.out.println(inicioInfoLogConsola() + "Boton inicio pulsado");
+        escribirLogInfo("Boton inicio pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_INI);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a inicio: " + e.getMessage());
+            escribirLogError("Error al navegar a inicio: " + e.getMessage());
+        }
     }
 
     public void btnTiendasAction(ActionEvent event) {
-        navegar(event, Paths.PRI_TIEN);
+        System.out.println(inicioInfoLogConsola() + "Boton tiendas pulsado");
+        escribirLogInfo("Boton tiendas pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_TIEN);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a tiendas: " + e.getMessage());
+            escribirLogError("Error al navegar a tiendas: " + e.getMessage());
+        }
     }
 
     public void btnFavoritosAction(ActionEvent event) {
-        navegar(event, Paths.PRI_FAV);
+        System.out.println(inicioInfoLogConsola() + "Boton favoritos pulsado");
+        escribirLogInfo("Boton favoritos pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_FAV);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a favoritos: " + e.getMessage());
+            escribirLogError("Error al navegar a favoritos: " + e.getMessage());
+        }
     }
 
     public void btnAjustesAction(ActionEvent event) {
-        navegar(event, Paths.PRI_INI);
+        System.out.println(inicioInfoLogConsola() + "Boton ajustes pulsado");
+        escribirLogInfo("Boton ajustes pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_AJU);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a ajustes: " + e.getMessage());
+            escribirLogError("Error al navegar a ajustes: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -235,4 +281,67 @@ public class TIEN_PERFController implements Initializable {
             mostrarError("Error de navegación", "No se pudo navegar a la pantalla solicitada.", e.getMessage());
         }
     }
+
+    private double calcularMediaValoraciones(){
+
+        Query<Double> qPromedio = session.createQuery(
+                        "SELECT AVG(numeroValoracion) FROM valoracion WHERE comercio = :idComercio",
+                        Double.class).setParameter("idComercio", comercioActual);
+        List<Double> listaPromedio = qPromedio.getResultList();
+
+        double promedio = (listaPromedio != null && !listaPromedio.isEmpty() && listaPromedio.get(0) != null)
+                ? listaPromedio.get(0)
+                : 0.0;
+
+        return promedio;
+    }
+
+    @FXML
+    private void confirmarValoracion() {
+        String seleccion = valoracionComboBox.getValue();
+        if (seleccion != null) {
+            int puntuacion = seleccion.length();
+
+            try {
+                Query<valoracion> qValoracion = session.createQuery("FROM valoracion WHERE usuario = :idUsuario AND comercio = :idComercio");
+                qValoracion.setParameter("idUsuario", usuario);
+                qValoracion.setParameter("idComercio", comercioActual);
+
+                List<valoracion> valoracionUsuarioLista = qValoracion.getResultList();
+
+
+                session.beginTransaction();
+
+                if (!valoracionUsuarioLista.isEmpty()) {
+                    // Update existing rating
+                    valoracion valoracionExistente = valoracionUsuarioLista.getFirst();
+                    valoracionExistente.setNumeroValoracion(puntuacion);
+                    session.update(valoracionExistente);
+                    mostrarInformacion("Valoración actualizada", "Tu valoración ha sido actualizada.", "Tenías una valoración existente y se ha actualizado");
+                } else {
+                    // Insert new rating
+                    model.valoracion nuevaValoracion = new model.valoracion();
+                    nuevaValoracion.setUsuario(usuario);
+                    nuevaValoracion.setComercio(comercioActual);
+                    nuevaValoracion.setNumeroValoracion(puntuacion);
+                    session.save(nuevaValoracion);
+                    mostrarInformacion("Valoración registrada", "Tu valoración ha sido registrada.", "");
+                }
+
+                session.getTransaction().commit();
+
+                // Recalcular media valoraciones
+                mediaValoracionesText.setText("Media valoraciones: " + calcularMediaValoraciones());
+
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                mostrarError("Error al valorar", "No se pudo registrar la valoración.", e.getMessage());
+            }
+        } else {
+            mostrarError("Valoración no seleccionada", "Por favor, selecciona una valoración antes de confirmar.", "");
+        }
+    }
+
+
+
 }

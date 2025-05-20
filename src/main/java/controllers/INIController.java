@@ -48,8 +48,8 @@ public class INIController {
             usuario = usuarioBuscadoLista.getFirst();
 
             if (usuario.isPropietario()) {
-                Query<comercio> qComercio = session.createQuery("from comercio where propietario = :usuarioId");
-                qComercio.setParameter("usuarioId", usuario.getIdUsuario());
+                Query<comercio> qComercio = session.createQuery("from comercio where propietario = :usuario");
+                qComercio.setParameter("usuario", usuario);
                 List<comercio> comercioLista = qComercio.getResultList();
 
                 if (!comercioLista.isEmpty()) {
@@ -67,12 +67,9 @@ public class INIController {
             escribirLogInfo("Usuario encontrado");
             escribirLogInfo("Nombre: " + usuario.getNombre());
 
-            if(usuarioBuscadoLista.getFirst().isPropietario()){
-                System.out.println("En construcción");
-            } else {
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                NavegacionController.navegarConCarga(event, stage, Paths.PRI_INI);
-            }
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegarConCarga(event, stage, Paths.PRI_INI);
+
 
         } else {
             System.out.println(inicioInfoLogConsola() + "Lista vacia. Usuario no encontrado");

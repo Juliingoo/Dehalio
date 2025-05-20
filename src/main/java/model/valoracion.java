@@ -12,23 +12,16 @@ public class valoracion {
     @Column(name = "idValoracion")
     private int idValoracion;
 
+    @Column(name = "numeroValoracion", nullable = false)
+    private int numeroValoracion;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario", nullable = false)
+    @JoinColumn(name = "usuario", nullable = false)
     private usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idComercio", nullable = false)
+    @JoinColumn(name = "comercio", nullable = false)
     private comercio comercio;
-
-    @Column(name = "comentario", length = 500)
-    private String comentario;
-
-    @Column(name = "puntuacion", nullable = false)
-    private int puntuacion;
-
-    @Column(name = "fecha", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
 
     // Getters y setters
 
@@ -56,27 +49,12 @@ public class valoracion {
         this.comercio = comercio;
     }
 
-    public String getComentario() {
-        return comentario;
+
+    public int getNumeroValoracion() {
+        return numeroValoracion;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public int getPuntuacion() {
-        return puntuacion;
-    }
-
-    public void setPuntuacion(int puntuacion) {
-        this.puntuacion = puntuacion;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setNumeroValoracion(int numeroValoracion) {
+        this.numeroValoracion = numeroValoracion;
     }
 }

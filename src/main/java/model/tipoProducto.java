@@ -14,9 +14,6 @@ public class tipoProducto {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "imagenBase")
-    private byte[] imagenBase;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idCategoriaTipoProducto", nullable = false)
     private categoriaTipoProducto categoria;
@@ -47,11 +44,4 @@ public class tipoProducto {
         this.categoria = categoria;
     }
 
-    public byte[] getImagenBase() {
-        return imagenBase;
-    }
-
-    public void setImagenBase(byte[] imagenBase) {
-        this.imagenBase = imagenBase;
-    }
 }

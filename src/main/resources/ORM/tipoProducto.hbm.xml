@@ -18,7 +18,6 @@
         </id>
 
         <property name="nombre" column="nombreBase" type="string" not-null="true"/>
-        <property name="imagenBase" column="imagenBase" type="binary" not-null="false"/>
 
         <!-- Relación con categoriaTipoProducto -->
         <many-to-one name="categoria" class="model.categoriaTipoProducto" column="categoria" not-null="true"/>

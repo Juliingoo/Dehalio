@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox fx:id="root" spacing="20.0"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.TarjetaSolicitudComercioController"
+      style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);">
+
+    <!-- Padding en HBox -->
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
+
+    <!-- Imagen del comercio -->
+    <ImageView fx:id="imagenView" fitHeight="100.0" fitWidth="100.0" preserveRatio="true" />
+
+    <!-- Datos del comercio -->
+    <VBox spacing="5.0">
+        <!-- Padding en VBox -->
+        <padding>
+            <Insets top="0" right="0" bottom="0" left="0"/>
+        </padding>
+
+        <Text text="Nombre:" >
+            <font><Font size="14.0"/></font>
+        </Text>
+        <Label fx:id="nombreLabel" />
+
+        <Text text="NIF:" >
+            <font><Font size="14.0"/></font>
+        </Text>
+        <Label fx:id="nifLabel" />
+
+        <Text text="Dirección:" >
+            <font><Font size="14.0"/></font>
+        </Text>
+        <Label fx:id="direccionLabel" />
+
+        <Text text="Municipio:" >
+            <font><Font size="14.0"/></font>
+        </Text>
+        <Label fx:id="municipioLabel" />
+
+        <Text text="Provincia:" >
+            <font><Font size="14.0"/></font>
+        </Text>
+        <Label fx:id="provinciaLabel" />
+
+        <Text text="C.P.:" >
+            <font><Font size="14.0"/></font>
+        </Text>
+        <Label fx:id="codigoPostalLabel" />
+
+        <Text text="Coordenadas:" >
+            <font><Font size="14.0"/></font>
+        </Text>
+        <Label fx:id="coordenadasLabel" />
+    </VBox>
+
+    <!-- Botones de acción -->
+    <VBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets top="0" right="0" bottom="0" left="0"/>
+        </padding>
+        <Button fx:id="aceptarBtn"
+                text="Aceptar"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" />
+        <Button fx:id="rechazarBtn"
+                text="Denegar"
+                style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 5;" />
+    </VBox>
+</HBox>

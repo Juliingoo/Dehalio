@@ -38,6 +38,12 @@
         <mapping resource="ORM/valoracion.hbm.xml"/>
         <mapping class="model.valoracion"/>
 
+        <mapping resource="ORM/solicitudComercio.hbm.xml"/>
+        <mapping class="model.solicitudComercio"/>
+
+        <mapping resource="ORM/administracion.hbm.xml"/>
+        <mapping class="model.administracion"/>
+
 
 
     </session-factory>

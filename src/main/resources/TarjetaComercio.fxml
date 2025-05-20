@@ -14,7 +14,8 @@
         <Label fx:id="labelDireccion" style="-fx-font-size: 12; -fx-text-fill: #757575;" />
       <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <children>
-             <Button mnemonicParsing="false" text="Visitar tienda" styleClass="visitarTienda-button" onAction="#visitarTiendaAction"/>         </children>
+             <Button mnemonicParsing="false" text="Visitar tienda" styleClass="visitarTienda-button" onAction="#visitarTiendaAction"/>
+         </children>
       </HBox>
     </children>
    <padding>

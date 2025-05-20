@@ -143,7 +143,7 @@ public class PRI_INIController implements Initializable{
         escribirLogInfo("Boton ajustes pulsado");
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            NavegacionController.navegar(stage, Paths.PRI_TIEN);
+            NavegacionController.navegar(stage, Paths.PRI_AJU);
         } catch (IOException e) {
             System.out.println("Error al navegar a ajustes: " + e.getMessage());
             escribirLogError("Error al navegar a ajustes: " + e.getMessage());

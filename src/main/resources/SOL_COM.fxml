@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="900.0" stylesheets="css/REG_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SOL_COMController">
+   <Button fx:id="atrasBtn" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#volverAtrasAction" style="-fx-background-color: FFFFFF; -fx-border-radius: 100;" textFill="#ff4c4c">
+      <font>
+         <Font name="System Bold" size="25.0" />
+      </font>
+      <graphic>
+         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@iconos/atras.png" />
+            </image>
+         </ImageView>
+      </graphic>
+   </Button>
+
+    <!-- Contenedor principal centrado -->
+    <StackPane maxWidth="0.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="40.0">
+        <!-- Panel blanco con contenido -->
+        <VBox alignment="CENTER" maxHeight="450.0" maxWidth="500.0" style="-fx-background-color: FFFFFF; -fx-background-radius: 10;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+         <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Formulario solicitud comercio">
+            <font>
+               <Font name="System Bold" size="25.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="25.0" top="-10.0" />
+            </VBox.margin>
+         </Text>
+
+            <!-- Campos de texto -->
+            <!-- Nombre y Apellidos en la misma línea -->
+            <HBox alignment="CENTER" spacing="10">
+                <TextField fx:id="nombreComercioCampo" prefWidth="200" promptText="Nombre comercio">
+                    <HBox.margin>
+                        <Insets bottom="20.0" />
+                    </HBox.margin>
+                </TextField>
+                <TextField fx:id="nifCampo" prefWidth="200" promptText="NIF">
+                    <HBox.margin>
+                        <Insets bottom="20.0" />
+                    </HBox.margin>
+                </TextField>
+            </HBox>
+
+            <TextField fx:id="direccionCampo" maxWidth="410.0" promptText="Dirección">
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </TextField>
+         <HBox maxWidth="410.0" spacing="10">
+            <children>
+               <TextField fx:id="codigoPostalCampo" alignment="TOP_LEFT" prefWidth="200" promptText="Código postal">
+                  <HBox.margin>
+                     <Insets bottom="20.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <TextField fx:id="coordenadasCampo" maxWidth="410.0" promptText="Coordenadas formato: 37.882071,-4.788080">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin>
+         </TextField>
+         <HBox maxWidth="410.0" spacing="10.0">
+            <children>
+               <TextField fx:id="municipioCampo" maxWidth="410.0" promptText="Municipio" />
+               <TextField fx:id="provinciaCampo" maxWidth="410.0" promptText="Provincia">
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+            <HBox alignment="CENTER_LEFT" maxWidth="410.0" spacing="10">
+                <Button fx:id="cargarImagenBtn" onAction="#cargarImagenAction" text="Cargar Imagen" />
+                <ImageView fx:id="imagenComercioView" fitHeight="100.0" fitWidth="100.0" preserveRatio="true" />
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin>
+            </HBox>
+
+                  <!-- Botones -->
+            <HBox alignment="TOP_RIGHT" spacing="10">
+                <Button fx:id="registrarseBtn" mnemonicParsing="false" onAction="#registrarComercioAction" prefHeight="32.0" prefWidth="126.0" text="Presentar solicitud" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets right="25.0" />
+               </HBox.margin>
+            </Button>
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+            </HBox>
+
+               <!-- Logo encima del cuadro -->
+            <ImageView fitHeight="100.0" fitWidth="100.0" rotate="10.3" translateX="220.0" translateY="80.0">
+                <image>
+                    <Image url="@images/Logo_Dehalio_Cortado_borde_blanco.png" />
+                </image>
+            </ImageView>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+        </VBox>
+    </StackPane>
+</AnchorPane>

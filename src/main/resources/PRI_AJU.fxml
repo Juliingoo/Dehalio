@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox prefHeight="720.0" prefWidth="1280.0" stylesheets="css/PRI_AJU_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PRI_AJUController">
+
+    <!-- Barra lateral de navegación -->
+    <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #FFFFFF;" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+        <VBox alignment="TOP_CENTER">
+            <children>
+                <!-- Logo -->
+                <ImageView fitHeight="90.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/Logo_Dehalio_wide.png" />
+                    </image>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="5.0" />
+                    </VBox.margin>
+                </ImageView>
+            </children>
+        </VBox>
+
+        <!-- Botones de navegación -->
+        <Button fx:id="btnInicio" alignment="CENTER" onAction="#btnInicioAction" prefWidth="500000.0" styleClass="nav-button-des" text="Inicio" textAlignment="CENTER" textFill="#de4733">
+            <VBox.margin>
+                <Insets bottom="7.0" />
+            </VBox.margin>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@iconos/inicioHomeGris.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <Button fx:id="btnTiendas" onAction="#btnTiendasAction" prefWidth="100000.0" styleClass="nav-button-des" text="Tiendas">
+            <VBox.margin>
+                <Insets bottom="7.0" />
+            </VBox.margin>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@iconos/tiendaGris.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <Button fx:id="btnFavoritos" onAction="#btnFavoritosAction" prefWidth="100000.0" styleClass="nav-button-des" text="Favoritos" textFill="#565557">
+            <VBox.margin>
+                <Insets bottom="7.0" />
+            </VBox.margin>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@iconos/corazonGris.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <Button fx:id="btnAjustes" onAction="#btnAjustesAction" prefWidth="100000.0" styleClass="nav-button-sel" text="Ajustes">
+            <VBox.margin>
+                <Insets bottom="7.0" />
+            </VBox.margin>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@iconos/ajustesGris.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+      <Button fx:id="administracionBtn" mnemonicParsing="false" onAction="#lanzarAdministracion" text="Administración">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Button>
+    </VBox>
+
+    <!-- ========== CONTENIDO AJUSTES ========== -->
+    <HBox spacing="20" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </padding>
+
+        <!-- ======= PANEL IZQUIERDO: FORMULARIOS ======= -->
+        <ScrollPane fitToWidth="true" style="-fx-background:transparent;" HBox.hgrow="ALWAYS">
+            <VBox fx:id="ajustesContainer" spacing="20">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+
+                <!-- - BLOQUE 1: EDICIÓN USUARIO - -->
+                <Text style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Mis Datos" />
+                <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-padding: 15; -fx-background-radius: 8;">
+                    <children>
+                        <TextField fx:id="tfNombre" promptText="Nombre" />
+                        <TextField fx:id="tfApellidos" promptText="Apellidos" />
+                        <TextField fx:id="tfEmail" promptText="Correo electrónico" />
+                        <TextField fx:id="tfDireccion" promptText="Dirección" />
+                        <TextField fx:id="tfCodigoPostal" maxWidth="100" promptText="Código Postal" />
+                        <TextField fx:id="tfMunicipio" promptText="Municipio" />
+                        <TextField fx:id="tfProvincia" promptText="Provincia" />
+                        <Button fx:id="btnGuardarUsuario" maxWidth="150" onAction="#onGuardarUsuario" styleClass="buscar-button" text="Guardar cambios" />
+                    </children>
+                </VBox>
+
+                <Separator />
+
+                <!-- - BLOQUE 2: AJUSTES COMERCIO - -->
+                <Text style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Ajustes de Comercio" />
+                <VBox fx:id="commerceSection" spacing="10">
+
+                    <!-- PANE PARA USUARIOS NO PROPIETARIOS -->
+                    <VBox fx:id="paneNoPropietario" managed="false" spacing="10" visible="false">
+                        <Text text="Aún no eres propietario." />
+                        <Button fx:id="btnSolicitarPropietario" maxWidth="200" onAction="#onSolicitarPropietario" styleClass="buscar-button" text="Solicitar apertura de tienda" />
+                    </VBox>
+
+                    <!-- PANE PARA PROPIETARIOS: GESTOR CRUD -->
+                    <VBox fx:id="panePropietario" managed="false" spacing="10" visible="false">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <ListView fx:id="lvProductos" prefHeight="200" prefWidth="200" />
+                            <VBox>
+                                <Button fx:id="btnAddProd" maxWidth="100" onAction="#onAddProducto" text="Añadir" />
+                                <Button fx:id="btnEditProd" maxWidth="100" onAction="#onEditProducto" text="Editar" />
+                                <Button fx:id="btnDeleteProd" maxWidth="100" onAction="#onDeleteProducto" text="Eliminar" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+
+        <!-- ======= PANEL DERECHO: EDITOR DE PRODUCTO ======= -->
+        <VBox fx:id="paneEditorProducto" managed="false" spacing="15" style="-fx-background-color: #ecf0f1; -fx-background-radius: 8;" visible="false" HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <Text style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Editor de Producto" />
+            <ImageView fx:id="ivProductoEd" fitHeight="200" fitWidth="250" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="btnChangeImage" maxWidth="150" onAction="#onCambiarImagen" text="Cambiar Imagen" />
+
+            <TextField fx:id="tfProdNombre" promptText="Nombre del producto" />
+            <TextField fx:id="tfProdPrecio" promptText="Precio" />
+            <ComboBox fx:id="cbTipoProducto" promptText="Tipo de producto">
+                <items>
+                    <FXCollections fx:factory="observableArrayList" />
+                </items>
+            </ComboBox>
+            <ComboBox fx:id="cbCategoriaProd" promptText="Categoría">
+                <items>
+                    <FXCollections fx:factory="observableArrayList" />
+                </items>
+            </ComboBox>
+
+            <HBox spacing="10">
+                <Button fx:id="btnSaveProd" maxWidth="100" onAction="#onGuardarProducto" styleClass="buscar-button" text="Guardar" />
+                <Button fx:id="btnCancelProd" maxWidth="100" onAction="#onCancelarEdicion" text="Cancelar" />
+            </HBox>
+        </VBox>
+    </HBox>
+</HBox>

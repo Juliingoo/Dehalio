@@ -33,7 +33,7 @@ public class NavegacionController {
         //Carga nueva escena
         Parent root = FXMLLoader.load(NavegacionController.class.getResource(fxmlPath));
         stage.setScene(new Scene(root));
-        stage.setMaximized(true);
+
         stage.show();
     }
 

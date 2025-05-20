@@ -39,6 +39,9 @@ public class usuario {
     @Column(name = "propietario", nullable = false)
     private boolean propietario;
 
+    @OneToOne(mappedBy = "propietario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private comercio comercio;
+
     // Getters y setters
 
     public int getIdUsuario() {
@@ -120,5 +123,13 @@ public class usuario {
 
     public void setPropietario(boolean propietario) {
         this.propietario = propietario;
+    }
+
+    public comercio getComercio() {
+        return comercio;
+    }
+
+    public void setComercio(comercio comercio) {
+        this.comercio = comercio;
     }
 }

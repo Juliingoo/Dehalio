@@ -5,23 +5,19 @@
 
 <hibernate-mapping>
 
-    <!-- Tiene un mapeo de todas las variables que corresponden a las columnas de la base de datos -->
-    <class name="model.valoracion" table="valoracion">
+    <!-- Almacenar la contraseña de administracion -->
+    <class name="model.administracion" table="administracion">
 
         <meta attribute="class-description">
             Esta clase representa una valoración hecha por un usuario sobre un comercio, incluyendo una puntuación y un comentario.
         </meta>
 
         <!-- ID autogenerado en la base de datos -->
-        <id name="idValoracion" type="int" column="idValoracion">
+        <id name="idAdministracion" type="int" column="idAdministracion">
             <generator class="increment"/>
         </id>
 
-        <property name="numeroValoracion" column="numeroValoracion" type="int" not-null="true"/>
-
-        <!-- Relaciones -->
-        <many-to-one name="usuario" class="model.usuario" column="usuario" not-null="true"/>
-        <many-to-one name="comercio" class="model.comercio" column="comercio" not-null="true"/>
+        <property name="contrasenia" column="contrasenia" type="string"/>
 
     </class>
 

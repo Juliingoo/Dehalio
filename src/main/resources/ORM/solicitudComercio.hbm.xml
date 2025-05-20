@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <!-- Mapeo de la clase solicitudComercio -->
+    <class name="model.solicitudComercio" table="solicitudComercio">
+
+        <meta attribute="class-description">
+            Esta clase representa las solicitudes de comercios realizadas por usuarios en el sistema.
+        </meta>
+
+        <!-- ID autogenerado en la base de datos -->
+        <id name="idSolicitudComercio" type="int" column="idSolicitudComercio">
+            <generator class="increment"/>
+        </id>
+
+        <!-- Propiedades que corresponden a las columnas de la tabla -->
+        <property name="nombre" column="nombre" type="string" not-null="true"/>
+        <property name="nif" column="NIF" type="string" not-null="true"/>
+        <property name="imagen" column="imagen" type="binary"/>
+        <property name="direccion" column="direccion" type="string" not-null="true"/>
+        <property name="codigoPostal" column="codigoPostal" type="string" not-null="true"/>
+        <property name="municipio" column="municipio" type="string" not-null="true"/>
+        <property name="provincia" column="provincia" type="string" not-null="true"/>
+        <property name="coordenadas" column="coordenadas" type="string" not-null="true"/>
+
+        <!-- Relación Many-to-One con la tabla usuario -->
+        <many-to-one name="solicitante" class="model.usuario" column="solicitante" not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>

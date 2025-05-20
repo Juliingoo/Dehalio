@@ -13,7 +13,7 @@
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
     <children>
-        <ImageView fx:id="imageView" fitWidth="100" preserveRatio="true" />
+        <ImageView fx:id="imageView" fitHeight="100" preserveRatio="true" />
 
         <Label fx:id="labelNombre" styleClass="nombreProducto" />
 

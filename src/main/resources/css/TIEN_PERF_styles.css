@@ -50,3 +50,48 @@
 .buscar-button:pressed {
     -fx-background-color: #c44536;
 }
+
+.valoraciones-box {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #dcdcdc;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-alignment: center;
+}
+
+.titulo-valoracion {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50;
+}
+
+.combo-valoracion {
+    -fx-pref-width: 180px;
+    -fx-font-size: 14px;
+}
+
+.combo-valoracion .list-cell {
+    -fx-font-family: 'Segoe UI Emoji';
+    -fx-font-size: 18px;
+}
+
+.btn-valoracion {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 6 20;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-valoracion:hover {
+    -fx-background-color: #2ecc71;
+}
+
+.media-texto {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+}
