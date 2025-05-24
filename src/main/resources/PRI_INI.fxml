@@ -100,14 +100,15 @@
          </Button>
        </VBox>
 
-       <!-- Contenido principal -->
-       <VBox maxWidth="-Infinity" minHeight="-Infinity" prefWidth="700.0" HBox.hgrow="ALWAYS">
+             <!-- Contenido principal -->
+       <VBox maxWidth="-Infinity" minHeight="-Infinity" prefWidth="700.0">
            <!-- Barra de búsqueda -->
            <HBox alignment="TOP_CENTER" style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
                <TextField fx:id="barraBusqueda" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Buscar productos..." style="-fx-background-radius: 15; -fx-pref-width: 300;" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="18.0" />
-               </font></TextField>
+               </font>
+            </TextField>
                <Button fx:id="btnBuscar" minWidth="-Infinity" onAction="#btnBuscarAction" prefWidth="100.0" styleClass="buscar-button" text="Buscar" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="7.0" />
@@ -152,15 +153,24 @@
             </children>
          </VBox>
 
-           <!-- Lista de productos adaptativa -->
+                 <!-- Lista de productos adaptativa -->
            <ScrollPane fx:id="scrollPaneProductos" fitToWidth="true" pannable="true" style="-fx-background: #ffffff;" VBox.vgrow="ALWAYS">
                <FlowPane fx:id="productosContainer" alignment="TOP_LEFT" hgap="20" maxHeight="-1" prefWrapLength="Infinity" vgap="20">
                <!-- Los productos se añadirán dinámicamente desde el controlador -->
            </FlowPane>
        </ScrollPane>
+         <HBox alignment="CENTER" style="-fx-background-color: #FFFFFF;">
+            <children>
+               <ImageView fitHeight="100.0" fitWidth="262.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@images/anuncio.gif" />
+                  </image>
+               </ImageView>
+            </children>
+         </HBox>
 
 
    </VBox>
-       <VBox fx:id="mapVBox" maxHeight="1080.0" maxWidth="1920.0" minWidth="100.0" style="-fx-padding: 30; -fx-background-radius: 50;" />
+       <VBox fx:id="mapVBox" alignment="BOTTOM_CENTER" maxHeight="1080.0" maxWidth="1920.0" minWidth="100.0" style="-fx-padding: 30; -fx-background-radius: 50;" />
    </children>
 </HBox>

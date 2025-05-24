@@ -9,12 +9,12 @@
 
 <VBox prefHeight="100" prefWidth="300" spacing="8" styleClass="tarjetaComercios" stylesheets="css/TarjetaComercio_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TarjetaComercioController">
     <children>
-        <ImageView fx:id="imageView" fitWidth="100" preserveRatio="true" />
+        <ImageView fx:id="imageView" fitHeight="100.0" preserveRatio="true" />
         <Label fx:id="labelNombre" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
         <Label fx:id="labelDireccion" style="-fx-font-size: 12; -fx-text-fill: #757575;" />
       <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <children>
-             <Button mnemonicParsing="false" text="Visitar tienda" styleClass="visitarTienda-button" onAction="#visitarTiendaAction"/>
+             <Button mnemonicParsing="false" onAction="#visitarTiendaAction" styleClass="visitarTienda-button" text="Visitar tienda" />
          </children>
       </HBox>
     </children>

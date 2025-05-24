@@ -41,6 +41,8 @@ import java.util.ResourceBundle;
 
 import static controllers.NavegacionController.mostrarError;
 import static database.Sesion.newSession;
+import static utilities.LogAdministrador.*;
+import static utilities.LogAdministrador.escribirLogError;
 
 public class PRI_FAVController implements Initializable {
 
@@ -81,19 +83,51 @@ public class PRI_FAVController implements Initializable {
     }
 
     public void btnInicioAction(ActionEvent event) {
-        navegar(event, Paths.PRI_INI);
+        System.out.println(inicioInfoLogConsola() + "Boton inicio pulsado");
+        escribirLogInfo("Boton inicio pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_INI);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a inicio: " + e.getMessage());
+            escribirLogError("Error al navegar a inicio: " + e.getMessage());
+        }
     }
 
     public void btnTiendasAction(ActionEvent event) {
-        navegar(event, Paths.PRI_TIEN);
+        System.out.println(inicioInfoLogConsola() + "Boton tiendas pulsado");
+        escribirLogInfo("Boton tiendas pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_TIEN);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a tiendas: " + e.getMessage());
+            escribirLogError("Error al navegar a tiendas: " + e.getMessage());
+        }
     }
 
     public void btnFavoritosAction(ActionEvent event) {
-        navegar(event, Paths.PRI_FAV);
+        System.out.println(inicioInfoLogConsola() + "Boton favoritos pulsado");
+        escribirLogInfo("Boton favoritos pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_FAV);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a favoritos: " + e.getMessage());
+            escribirLogError("Error al navegar a favoritos: " + e.getMessage());
+        }
     }
 
     public void btnAjustesAction(ActionEvent event) {
-        navegar(event, Paths.PRI_INI);
+        System.out.println(inicioInfoLogConsola() + "Boton ajustes pulsado");
+        escribirLogInfo("Boton ajustes pulsado");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            NavegacionController.navegar(stage, Paths.PRI_AJU);
+        } catch (IOException e) {
+            System.out.println("Error al navegar a ajustes: " + e.getMessage());
+            escribirLogError("Error al navegar a ajustes: " + e.getMessage());
+        }
     }
 
     @FXML

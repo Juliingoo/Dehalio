@@ -54,49 +54,11 @@ public class SOL_COMController {
     private Button cargarImagenBtn;
 
     @FXML
-    private Button registrarseBtn;
+    private Button PresentarSolicitBtn;
 
     private byte[] imagenBuffer;
 
     Session session = newSession();
-
-    @FXML
-    public void registrarComercioAction(ActionEvent event) {
-        try {
-            if (nombreComercioCampo.getText().isEmpty() || nifCampo.getText().isEmpty() ||
-                    direccionCampo.getText().isEmpty() || coordenadasCampo.getText().isEmpty() ||
-                    codigoPostalCampo.getText().isEmpty() || municipioCampo.getText().isEmpty() ||
-                    provinciaCampo.getText().isEmpty()) {
-                mostrarError("Campos obligatorios", "Se deben rellenar los campos", "Por favor, completa todos los campos obligatorios.");
-                return;
-            }
-
-            solicitudComercio nuevaSolicitud = new solicitudComercio();
-            nuevaSolicitud.setNombre(nombreComercioCampo.getText());
-            nuevaSolicitud.setNif(nifCampo.getText());
-            nuevaSolicitud.setDireccion(direccionCampo.getText());
-            nuevaSolicitud.setCodigoPostal(codigoPostalCampo.getText());
-            nuevaSolicitud.setCoordenadas(coordenadasCampo.getText());
-            nuevaSolicitud.setMunicipio(municipioCampo.getText());
-            nuevaSolicitud.setProvincia(provinciaCampo.getText());
-            nuevaSolicitud.setImagen(imagenBuffer);
-
-            usuario usuarioActual = Sesion.usuario;
-            nuevaSolicitud.setSolicitante(usuarioActual);
-
-
-            session.beginTransaction();
-            session.save(nuevaSolicitud);
-            session.getTransaction().commit();
-
-            mostrarInformacion("Solicitud registrada", "Registro exitoso", "La solicitud del comercio ha sido registrada exitosamente.");
-            limpiarFormulario();
-
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            mostrarError("Error al registrar", "No se pudo registrar la solicitud.", e.getMessage());
-        }
-    }
 
     private void limpiarFormulario() {
         nombreComercioCampo.clear();
@@ -134,6 +96,43 @@ public class SOL_COMController {
             } catch (IOException e) {
                 mostrarError("Error al cargar imagen", "No se pudo cargar la imagen.", e.getMessage());
             }
+        }
+    }
+
+    public void presentarSolicitud(ActionEvent event) {
+        try {
+            if (nombreComercioCampo.getText().isEmpty() || nifCampo.getText().isEmpty() ||
+                    direccionCampo.getText().isEmpty() || coordenadasCampo.getText().isEmpty() ||
+                    codigoPostalCampo.getText().isEmpty() || municipioCampo.getText().isEmpty() ||
+                    provinciaCampo.getText().isEmpty()) {
+                mostrarError("Campos obligatorios", "Se deben rellenar los campos", "Por favor, completa todos los campos obligatorios.");
+                return;
+            }
+
+            solicitudComercio nuevaSolicitud = new solicitudComercio();
+            nuevaSolicitud.setNombre(nombreComercioCampo.getText());
+            nuevaSolicitud.setNif(nifCampo.getText());
+            nuevaSolicitud.setDireccion(direccionCampo.getText());
+            nuevaSolicitud.setCodigoPostal(codigoPostalCampo.getText());
+            nuevaSolicitud.setCoordenadas(coordenadasCampo.getText());
+            nuevaSolicitud.setMunicipio(municipioCampo.getText());
+            nuevaSolicitud.setProvincia(provinciaCampo.getText());
+            nuevaSolicitud.setImagen(imagenBuffer);
+
+            usuario usuarioActual = Sesion.usuario;
+            nuevaSolicitud.setSolicitante(usuarioActual);
+
+
+            session.beginTransaction();
+            session.save(nuevaSolicitud);
+            session.getTransaction().commit();
+
+            mostrarInformacion("Solicitud registrada", "Registro exitoso", "La solicitud del comercio ha sido registrada exitosamente.");
+            limpiarFormulario();
+
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            mostrarError("Error al registrar", "No se pudo registrar la solicitud.", e.getMessage());
         }
     }
 }

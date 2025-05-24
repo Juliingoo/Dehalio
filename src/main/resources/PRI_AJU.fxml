@@ -100,11 +100,15 @@
                 </ImageView>
             </graphic>
         </Button>
-      <Button fx:id="administracionBtn" mnemonicParsing="false" onAction="#lanzarAdministracion" text="Administración">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Button>
+      <VBox alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
+         <children>
+            <Button fx:id="administracionBtn" mnemonicParsing="false" onAction="#lanzarAdministracion" style="-fx-background-color: FFFFFF;" text="                      ">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
     </VBox>
 
     <!-- ========== CONTENIDO AJUSTES ========== -->
@@ -144,7 +148,7 @@
                     <!-- PANE PARA USUARIOS NO PROPIETARIOS -->
                     <VBox fx:id="paneNoPropietario" managed="false" spacing="10" visible="false">
                         <Text text="Aún no eres propietario." />
-                        <Button fx:id="btnSolicitarPropietario" maxWidth="200" onAction="#onSolicitarPropietario" styleClass="buscar-button" text="Solicitar apertura de tienda" />
+                        <Button fx:id="btnSolicitarPropietario" onAction="#onSolicitarPropietario" styleClass="buscar-button" text="Solicitar apertura de tienda" />
                     </VBox>
 
                     <!-- PANE PARA PROPIETARIOS: GESTOR CRUD -->

@@ -17,6 +17,8 @@ import utilities.Paths;
 
 import java.util.List;
 
+import static controllers.NavegacionController.mostrarError;
+import static controllers.NavegacionController.mostrarInformacion;
 import static database.Sesion.*;
 import static utilities.Encriptacion.encriptarMD5;
 import static utilities.LogAdministrador.*;
@@ -73,6 +75,7 @@ public class INIController {
 
         } else {
             System.out.println(inicioInfoLogConsola() + "Lista vacia. Usuario no encontrado");
+            mostrarError("Error", "Usuario o contraseña no encontrados", "Introduzca unas credenciales válidas");
         }
 
     }

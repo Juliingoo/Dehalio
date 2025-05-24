@@ -3,6 +3,7 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.administracion;
@@ -24,6 +25,8 @@ import static utilities.LogAdministrador.*;
 
 public class PAS_ADMIN {
 
+    public Button atrasBtn;
+    public Button aceptarBtn;
     @FXML
     private TextField contraseniaCampo;
 
@@ -68,14 +71,37 @@ public class PAS_ADMIN {
                 }
             } else {
                 mostrarError("Contraseña incorrecta", "Clave erronea", "Ha introducido una clave erronea");
-                Thread.sleep(2000);
+                desactivarTodoTiempo(5000);
             }
 
         } catch (Exception e) {
             escribirLogError(e.getMessage());
+            mostrarError("Error", "Introduzca la clave de nuevo", e.getMessage());
+            desactivarTodoTiempo(5000);
         }
+    }
 
+    public void desactivarTodoTiempo(int cooldownMiliseg){
+        new Thread(() -> {
+            try {
+                System.out.println(inicioInfoLogConsola() +
+                        "Desactivando elementos de la pasarela durante " + cooldownMiliseg + " milisegundos");
+                escribirLogInfo("Desactivando de la pasarela elementos durante " + cooldownMiliseg + " milisegundos");
+                atrasBtn.setDisable(true);
+                aceptarBtn.setDisable(true);
+                contraseniaCampo.setDisable(true);
+                Thread.sleep(cooldownMiliseg);
+                System.out.println(inicioInfoLogConsola() +
+                        "Activando de la pasarela elementos de nuevo");
+                escribirLogInfo("Activando de la pasarela elementos de nuevo");
+                atrasBtn.setDisable(false);
+                aceptarBtn.setDisable(false);
+                contraseniaCampo.setDisable(false);
 
+            } catch (InterruptedException e) {
+                escribirLogError("Error en el Thread: " + e.getMessage());
+            }
+        }).start();
     }
 
 }

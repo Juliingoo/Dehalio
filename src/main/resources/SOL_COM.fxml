@@ -12,22 +12,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="900.0" stylesheets="css/REG_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SOL_COMController">
-   <Button fx:id="atrasBtn" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#volverAtrasAction" style="-fx-background-color: FFFFFF; -fx-border-radius: 100;" textFill="#ff4c4c">
+<AnchorPane prefHeight="800.0" prefWidth="900.0" stylesheets="css/SOL_COM_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SOL_COMController">
+   <Button fx:id="atrasBtn" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#volverAtrasAction" style="-fx-alignment: FFFFFF; -fx-border-radius: 100;" styleClass="secundario-button" text="Atrás">
       <font>
-         <Font name="System Bold" size="25.0" />
+         <Font size="14.0" />
       </font>
-      <graphic>
-         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@iconos/atras.png" />
-            </image>
-         </ImageView>
-      </graphic>
    </Button>
 
     <!-- Contenedor principal centrado -->
-    <StackPane maxWidth="0.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="40.0">
+    <StackPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="40.0">
         <!-- Panel blanco con contenido -->
         <VBox alignment="CENTER" maxHeight="450.0" maxWidth="500.0" style="-fx-background-color: FFFFFF; -fx-background-radius: 10;">
             <padding>
@@ -87,7 +80,7 @@
             </children>
          </HBox>
             <HBox alignment="CENTER_LEFT" maxWidth="410.0" spacing="10">
-                <Button fx:id="cargarImagenBtn" onAction="#cargarImagenAction" text="Cargar Imagen" />
+                <Button fx:id="cargarImagenBtn" onAction="#cargarImagenAction" styleClass="secundario-button" text="Cargar Imagen" />
                 <ImageView fx:id="imagenComercioView" fitHeight="100.0" fitWidth="100.0" preserveRatio="true" />
             <VBox.margin>
                <Insets top="20.0" />
@@ -96,7 +89,7 @@
 
                   <!-- Botones -->
             <HBox alignment="TOP_RIGHT" spacing="10">
-                <Button fx:id="registrarseBtn" mnemonicParsing="false" onAction="#registrarComercioAction" prefHeight="32.0" prefWidth="126.0" text="Presentar solicitud" textAlignment="CENTER">
+                <Button fx:id="presentarSolicitudBtn" mnemonicParsing="false" onAction="#presentarSolicitud" styleClass="principal-button" text="Presentar solicitud" textAlignment="CENTER">
                <HBox.margin>
                   <Insets right="25.0" />
                </HBox.margin>

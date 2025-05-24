@@ -8,7 +8,7 @@
 .principal-button {
     -fx-background-color: #de4733;
     -fx-text-fill: #FFFFFF;
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-alignment: center;
     -fx-background-radius: 5;
@@ -20,4 +20,27 @@
 
 .principal-button:pressed {
     -fx-background-color: #c44536;
+}
+
+.secundario-button {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #de4733;
+    -fx-border-width: 2px;
+    -fx-text-fill: #de4733;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-border-radius: 5;
+}
+
+.secundario-button:hover {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #de3822;
+    -fx-text-fill: #de3822;
+}
+
+.secundario-button:pressed {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #c44536;
+    -fx-text-fill: #c44536;
 }

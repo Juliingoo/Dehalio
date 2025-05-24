@@ -3,6 +3,7 @@ package application;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import utilities.Paths;
@@ -24,6 +25,7 @@ public class App extends Application{
         AnchorPane load = FXMLLoader.load(getClass().getResource(Paths.INI));
         Scene scene = new Scene(load);
         stage.setScene(scene);
+        stage.getIcons().add(new Image("/images/Logo_Dehalio_Icono_Rojo.png"));
         stage.show();
     }
 }

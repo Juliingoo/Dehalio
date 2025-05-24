@@ -38,7 +38,7 @@
             </VBox>
 
             <!-- Botones de navegación -->
-            <Button fx:id="btnInicio" alignment="CENTER" onAction="#btnInicioAction" prefWidth="500000.0" styleClass="nav-button-sel" text="Inicio" textAlignment="CENTER" textFill="#de4733">
+            <Button fx:id="btnInicio" alignment="CENTER" onAction="#btnInicioAction" prefWidth="500000.0" styleClass="nav-button-des" text="Inicio" textAlignment="CENTER" textFill="#de4733">
                 <VBox.margin>
                     <Insets bottom="7.0" />
                 </VBox.margin>
@@ -54,7 +54,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="btnTiendas" onAction="#btnTiendasAction" prefWidth="100000.0" styleClass="nav-button-des" text="Tiendas">
+            <Button fx:id="btnTiendas" onAction="#btnTiendasAction" prefWidth="100000.0" styleClass="nav-button-sel" text="Tiendas">
                 <VBox.margin>
                     <Insets bottom="7.0" />
                 </VBox.margin>

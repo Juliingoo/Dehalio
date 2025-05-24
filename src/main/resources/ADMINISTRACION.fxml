@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ADMINISTRACIONController">
-   <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+   <VBox spacing="20.0">
       <children>
           <Button fx:id="atrasBtn" mnemonicParsing="false" onAction="#volverAtrasAction" style="-fx-background-color: FFFFFF; -fx-border-radius: 100;" textFill="#ff4c4c">
               <font>
@@ -39,7 +39,7 @@
           </Text>
       
           <!-- Contenedor scrollable para múltiples solicitudes -->
-          <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+          <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
               <content>
                   <VBox fx:id="contenedorSolicitudes" spacing="20.0">
                       <padding>

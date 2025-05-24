@@ -16,6 +16,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import static controllers.NavegacionController.mostrarError;
+import static controllers.NavegacionController.mostrarInformacion;
 import static database.Sesion.newSession;
 import static utilities.Encriptacion.encriptarMD5;
 
@@ -88,6 +90,18 @@ public class REGController {
             session.beginTransaction();
             session.save(usuarioNuevo);
             session.getTransaction().commit();
+
+            if(existeUsuario(usuarioNuevo)){
+                mostrarInformacion("Registro exitoso", "Se ha registrado su usuario correctamente",
+                        "Gracias por unirse a Dehalio 😀. Ya puede iniciar sesión. ");
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                NavegacionController.irAtras(stage);
+            } else {
+                mostrarError("Error al registrarse", "Se ha producido un error al registrarse",
+                        "No se pudo guardar el usuario nuevo");
+            }
+
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage() );
         }
@@ -102,4 +116,5 @@ public class REGController {
 
         return !usuarioComprobacionEmailLista.isEmpty();
     }
+
 }
