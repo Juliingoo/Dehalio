@@ -33,18 +33,15 @@ import static utilities.LogAdministrador.inicioInfoLogConsola;
 
 public class PRI_AJUController implements Initializable {
 
-    // —— USUARIO —————————————————————————————————————————————————————————————
     @FXML private TextField tfNombre, tfApellidos, tfEmail, tfDireccion;
     @FXML private TextField tfCodigoPostal, tfMunicipio, tfProvincia;
     @FXML private Button btnGuardarUsuario;
 
-    // —— COMERCIO ————————————————————————————————————————————————————————————
     @FXML private VBox paneNoPropietario, panePropietario;
     @FXML private Button btnSolicitarPropietario;
     @FXML private ListView<producto> lvProductos;
     @FXML private Button btnAddProd, btnEditProd, btnDeleteProd;
 
-    // —— EDITOR PRODUCTO —————————————————————————————————————————————————————
     @FXML private VBox paneEditorProducto;
     @FXML private ImageView ivProductoEd;
     @FXML private Button btnChangeImage, btnSaveProd, btnCancelProd;
@@ -364,49 +361,6 @@ public class PRI_AJUController implements Initializable {
         tfProdPrecio.clear();
         cbTipoProducto.getSelectionModel().clearSelection();
         cbCategoriaProd.getSelectionModel().clearSelection();
-    }
-
-    public byte[] reescalarImagen(byte[] originalImageBytes, int targetWidth, int targetHeight) throws IOException {
-        // Cargar la imagen original
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(originalImageBytes);
-        Image originalImage = new Image(inputStream);
-
-        if (originalImage.isError()) {
-            throw new IOException("Error al cargar la imagen original.");
-        }
-
-        // Crear una imagen redimensionada
-        WritableImage resizedImage = new WritableImage(targetWidth, targetHeight);
-        PixelReader pixelReader = originalImage.getPixelReader();
-
-        if (pixelReader == null) {
-            throw new IOException("PixelReader es null. Imagen no válida o mal cargada.");
-        }
-
-        PixelWriter pixelWriter = resizedImage.getPixelWriter();
-
-        double scaleX = originalImage.getWidth() / targetWidth;
-        double scaleY = originalImage.getHeight() / targetHeight;
-
-        for (int y = 0; y < targetHeight; y++) {
-            for (int x = 0; x < targetWidth; x++) {
-                int origX = (int) (x * scaleX);
-                int origY = (int) (y * scaleY);
-                pixelWriter.setArgb(x, y, pixelReader.getArgb(origX, origY));
-            }
-        }
-
-        // Convertir a BufferedImage
-        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(resizedImage, null);
-
-        // Escribir en byte[]
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        boolean success = ImageIO.write(bufferedImage, "jpg", outputStream);
-        if (!success) {
-            throw new IOException("No se pudo escribir la imagen en formato JPG.");
-        }
-
-        return outputStream.toByteArray();
     }
 
     public void lanzarAdministracion(ActionEvent event) {

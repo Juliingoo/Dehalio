@@ -24,10 +24,6 @@ public class producto {
     private double precio;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "idTipoPrecio", nullable = false)
-    private tipoPrecio tipoPrecio;
-
-    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "idComercio", nullable = false)
     private comercio comercio;
 
@@ -75,15 +71,6 @@ public class producto {
 
     public void setTipo(tipoProducto tipo) {
         this.tipo = tipo;
-    }
-
-
-    public tipoPrecio getTipoPrecio() {
-        return tipoPrecio;
-    }
-
-    public void setTipoPrecio(tipoPrecio tipoPrecio) {
-        this.tipoPrecio = tipoPrecio;
     }
 
     public byte[] getImagen() {

@@ -283,13 +283,4 @@ public class PRI_FAVController implements Initializable {
         }
     }
 
-    private void navegar(ActionEvent event, String path) {
-        try {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            NavegacionController.navegar(stage, path);
-        } catch (IOException e) {
-            LogAdministrador.escribirLogError("Error al navegar: " + e.getMessage());
-            mostrarError("Error de navegación", "No se pudo navegar a la pantalla solicitada.", e.getMessage());
-        }
-    }
 }

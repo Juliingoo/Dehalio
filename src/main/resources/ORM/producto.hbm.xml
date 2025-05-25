@@ -22,7 +22,6 @@
         <property name="precio" column="precio" type="double"/>
 
         <!-- Relaciones con otras tablas -->
-        <many-to-one name="tipoPrecio" class="model.tipoPrecio" column="tipoPrecio" not-null="false"/>
         <many-to-one name="comercio" class="model.comercio" column="comercio" not-null="true"/>
         <many-to-one name="tipo" class="model.tipoProducto" column="tipo" not-null="true"/>
 

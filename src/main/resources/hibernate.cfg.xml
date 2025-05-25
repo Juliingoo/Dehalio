@@ -29,9 +29,6 @@
         <mapping resource="ORM/categoriaTipoProducto.hbm.xml"/>
         <mapping class="model.categoriaTipoProducto"/>
 
-        <mapping resource="ORM/tipoPrecio.hbm.xml"/>
-        <mapping class="model.tipoPrecio"/>
-
         <mapping resource="ORM/productoFavorito.hbm.xml"/>
         <mapping class="model.productoFavorito"/>
 

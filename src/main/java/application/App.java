@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import utilities.Paths;
 import utilities.LogAdministrador;
-import utilities.LogAdministrador.*;
+
 
 public class App extends Application{
     public static void main(String[] args) {
