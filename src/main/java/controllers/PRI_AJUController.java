@@ -91,7 +91,7 @@ public class PRI_AJUController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item.getNombre()); // Aquí defines lo que se muestra
+                    setText(item.getNombre());
                 }
             }
         });
