@@ -19,6 +19,7 @@ import javax.persistence.Query;
 import java.io.IOException;
 import java.util.List;
 
+import static controllers.NavegacionController.mostrarInformacion;
 import static controllers.NavegacionController.navegar;
 import static database.Sesion.newSession;
 import static database.Sesion.usuario;
@@ -32,19 +33,25 @@ public class ADMINISTRACIONController {
 
     Session session = newSession();
 
-
+    /**
+     * Inicializa el controlador cargando las solicitudes pendientes al iniciar la vista.
+     */
     @FXML
     public void initialize() {
         cargarSolicitudes();
     }
 
+    /**
+     * Recupera las solicitudes de comercio desde la base de datos y las muestra en la interfaz.
+     * Muestra una alerta si no hay solicitudes o si ocurre un error al cargarlas.
+     */
     private void cargarSolicitudes() {
         try {
             Query qSolicitudes = session.createQuery("from solicitudComercio");
             List<solicitudComercio> lista = qSolicitudes.getResultList();
 
             if (lista.isEmpty()) {
-                mostrarAlerta("Información", "No hay solicitudes para mostrar.");
+                mostrarInformacion("Información", "No hay solicitudes para mostrar.", "Ningún usuario ha realizado una solicitud");
                 return;
             }
 
@@ -58,14 +65,21 @@ public class ADMINISTRACIONController {
 
                     contenedorSolicitudes.getChildren().add(tarjeta);
                 } catch (IOException e) {
-                    mostrarAlerta("Error cargando tarjeta", "No se pudo cargar una tarjeta: " + e.getMessage());
+                    mostrarInformacion("Error","Error cargando tarjeta", "No se pudo cargar una tarjeta: " + e.getMessage());
                 }
             }
         } catch (Exception e) {
-            mostrarAlerta("Error cargando solicitudes", "Ocurrió un error al cargar las solicitudes: " + e.getMessage());
+            mostrarInformacion("Error", "Error cargando solicitudes", "Ocurrió un error al cargar las solicitudes: " + e.getMessage());
         }
     }
 
+    /**
+     * Acepta una solicitud de comercio, crea un nuevo comercio con los datos de la solicitud,
+     * actualiza el usuario como propietario y elimina la solicitud de la base de datos.
+     * Recarga la lista de solicitudes tras la operación.
+     *
+     * @param solicitud la solicitud de comercio a aceptar
+     */
     public void aceptarSolicitud(solicitudComercio solicitud) {
         Transaction tx = session.beginTransaction();
 
@@ -89,6 +103,11 @@ public class ADMINISTRACIONController {
         recargarSolicitudes();
     }
 
+    /**
+     * Elimina una solicitud de comercio de la base de datos y recarga la lista de solicitudes.
+     *
+     * @param solicitud la solicitud de comercio a rechazar
+     */
     public void rechazarSolicitud(solicitudComercio solicitud) {
         Transaction tx = session.beginTransaction();
         session.remove(solicitud);
@@ -97,19 +116,19 @@ public class ADMINISTRACIONController {
         recargarSolicitudes();
     }
 
+    /**
+     * Limpia el contenedor de solicitudes y vuelve a cargar las solicitudes desde la base de datos.
+     */
     private void recargarSolicitudes() {
         contenedorSolicitudes.getChildren().clear();
         cargarSolicitudes();
     }
 
-    private void mostrarAlerta(String titulo, String contenido) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(contenido);
-        alert.showAndWait();
-    }
-
+    /**
+     * Navega a la pantalla anterior (ajustes) al recibir el evento correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void volverAtrasAction(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {

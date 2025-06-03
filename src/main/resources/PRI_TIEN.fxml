@@ -140,8 +140,6 @@
                             </HBox.margin>
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Precio Ascendente" />
-                                    <String fx:value="Precio Descendente" />
                                     <String fx:value="Nombre" />
                                 </FXCollections>
                             </items>

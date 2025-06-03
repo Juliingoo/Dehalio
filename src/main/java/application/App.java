@@ -11,6 +11,12 @@ import utilities.LogAdministrador;
 
 
 public class App extends Application{
+
+    /**
+     * Punto de entrada principal de la aplicación. Inicializa el sistema de logs y lanza la aplicación JavaFX.
+     *
+     * @param args argumentos de línea de comandos
+     */
     public static void main(String[] args) {
         System.out.println(LogAdministrador.inicioInfoLogConsola() + "Aplicación iniciada");
         LogAdministrador.comprobarDirectorioLogs();
@@ -18,6 +24,12 @@ public class App extends Application{
         launch();
     }
 
+    /**
+     * Inicializa y muestra la ventana principal de la aplicación cargando la escena inicial desde el archivo FXML.
+     *
+     * @param stage el escenario principal proporcionado por JavaFX
+     * @throws Exception si ocurre un error al cargar la interfaz
+     */
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println(LogAdministrador.inicioInfoLogConsola() + "Arrancando ventana");

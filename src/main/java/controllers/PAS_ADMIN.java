@@ -32,6 +32,12 @@ public class PAS_ADMIN {
 
     Session session = newSession();
 
+    /**
+     * Navega a la pantalla de ajustes al recibir el evento correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void atrasAction(ActionEvent event) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -42,6 +48,12 @@ public class PAS_ADMIN {
         }
     }
 
+    /**
+     * Valida la contraseña ingresada descifrándola y comparándola con la clave esperada.
+     * Si la autenticación es correcta, navega a la pantalla de administración; de lo contrario, muestra un error y desactiva los controles temporalmente.
+     *
+     * @param event el evento de acción que dispara la validación
+     */
     public void aceptarAction(ActionEvent event) {
         String palabra = "admin";
 
@@ -81,6 +93,12 @@ public class PAS_ADMIN {
         }
     }
 
+    /**
+     * Desactiva los controles de la interfaz durante el tiempo especificado para evitar intentos repetidos.
+     * Reactiva los controles una vez transcurrido el tiempo.
+     *
+     * @param cooldownMiliseg tiempo en milisegundos que los controles permanecerán desactivados
+     */
     public void desactivarTodoTiempo(int cooldownMiliseg){
         new Thread(() -> {
             try {

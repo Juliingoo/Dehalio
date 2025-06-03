@@ -33,6 +33,12 @@ public class INIController {
 
     Session session = newSession();
 
+    /**
+     * Gestiona el proceso de inicio de sesión: valida las credenciales, recupera el usuario y su comercio asociado si corresponde,
+     * y navega a la pantalla principal si la autenticación es exitosa. Muestra un error si las credenciales no son válidas.
+     *
+     * @param event el evento de acción que dispara el inicio de sesión
+     */
     @FXML
     void iniciarSesionAction(ActionEvent event){
         System.out.println(inicioInfoLogConsola() + "Iniciar sesión pulsado");
@@ -80,6 +86,12 @@ public class INIController {
 
     }
 
+    /**
+     * Navega a la pantalla de registro de usuario al recibir el evento correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     * @throws Exception si ocurre un error al cargar la vista de registro
+     */
     @FXML
     void registrarseAction(ActionEvent event) throws Exception{
         System.out.println(inicioInfoLogConsola() + "Registrarse pulsado");
