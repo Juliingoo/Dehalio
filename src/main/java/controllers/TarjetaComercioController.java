@@ -31,6 +31,12 @@ public class TarjetaComercioController {
 
     private comercio comercioActual;
 
+    /**
+     * Configura la tarjeta visualizando la imagen, nombre y dirección del comercio recibido.
+     * Si el comercio no tiene imagen, se muestra una imagen por defecto.
+     *
+     * @param comercio comercio cuyos datos se mostrarán en la tarjeta
+     */
     public void setComercio(comercio comercio) {
         this.comercioActual = comercio;
 
@@ -46,6 +52,12 @@ public class TarjetaComercioController {
         labelDireccion.setText(comercio.getDireccion());
     }
 
+    /**
+     * Navega al perfil detallado del comercio seleccionado al pulsar el botón correspondiente.
+     * Pasa la información del comercio al nuevo controlador.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     @FXML
     private void visitarTiendaAction(ActionEvent event) {
         try {

@@ -60,6 +60,9 @@ public class SOL_COMController {
 
     Session session = newSession();
 
+    /**
+     * Limpia todos los campos del formulario y elimina la imagen cargada.
+     */
     private void limpiarFormulario() {
         nombreComercioCampo.clear();
         nifCampo.clear();
@@ -72,6 +75,11 @@ public class SOL_COMController {
     }
 
 
+    /**
+     * Navega a la pantalla de ajustes al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void volverAtrasAction(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
@@ -82,6 +90,12 @@ public class SOL_COMController {
         }
     }
 
+    /**
+     * Permite seleccionar una imagen desde el sistema de archivos y la muestra en la vista previa.
+     * Almacena la imagen seleccionada en un buffer para su posterior guardado.
+     *
+     * @param event el evento de acción que dispara la carga de imagen
+     */
     @FXML
     private void cargarImagenAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -99,6 +113,12 @@ public class SOL_COMController {
         }
     }
 
+    /**
+     * Valida los campos del formulario y registra una nueva solicitud de comercio en la base de datos.
+     * Muestra mensajes de error o éxito según el resultado y limpia el formulario tras un registro exitoso.
+     *
+     * @param event el evento de acción que dispara el registro de la solicitud
+     */
     public void presentarSolicitud(ActionEvent event) {
         try {
             if (nombreComercioCampo.getText().isEmpty() || nifCampo.getText().isEmpty() ||

@@ -84,6 +84,12 @@ public class TIEN_PERFController implements Initializable {
 
     Session session = newSession();
 
+    /**
+     * Inicializa la pantalla de perfil de tienda, configurando los listeners de búsqueda y carga inicial de productos.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados para la internacionalización
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LogAdministrador.escribirLogInfo("Inicializando pantalla de perfil de tienda.");
@@ -100,6 +106,11 @@ public class TIEN_PERFController implements Initializable {
         cargarProductos();
     }
 
+    /**
+     * Navega a la pantalla de inicio al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnInicioAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton inicio pulsado");
         escribirLogInfo("Boton inicio pulsado");
@@ -112,6 +123,11 @@ public class TIEN_PERFController implements Initializable {
         }
     }
 
+    /**
+     * Navega a la pantalla de listado de tiendas al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnTiendasAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton tiendas pulsado");
         escribirLogInfo("Boton tiendas pulsado");
@@ -124,6 +140,11 @@ public class TIEN_PERFController implements Initializable {
         }
     }
 
+    /**
+     * Navega a la pantalla de favoritos al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnFavoritosAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton favoritos pulsado");
         escribirLogInfo("Boton favoritos pulsado");
@@ -136,6 +157,11 @@ public class TIEN_PERFController implements Initializable {
         }
     }
 
+    /**
+     * Navega a la pantalla de ajustes al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnAjustesAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton ajustes pulsado");
         escribirLogInfo("Boton ajustes pulsado");
@@ -148,11 +174,21 @@ public class TIEN_PERFController implements Initializable {
         }
     }
 
+    /**
+     * Ejecuta la búsqueda de productos según el criterio introducido y el filtro seleccionado.
+     *
+     * @param event el evento de acción que dispara la búsqueda
+     */
     @FXML
     public void btnBuscarAction(ActionEvent event) {
         buscar();
     }
 
+    /**
+     * Configura la vista con los datos del comercio recibido y carga sus productos.
+     *
+     * @param comercio comercio cuyos datos y productos se mostrarán
+     */
     public void setComercio(comercio comercio) {
         this.comercioActual = comercio;
 
@@ -175,6 +211,10 @@ public class TIEN_PERFController implements Initializable {
         cargarProductos();
     }
 
+    /**
+     * Carga y muestra todas las tarjetas de productos del comercio actual en la vista.
+     * Muestra mensajes de error si ocurre algún problema al cargar los productos.
+     */
     private void cargarProductos() {
         // Simulación de consulta de productos
         List<producto> listaProductos = obtenerProductosDeTienda();
@@ -199,6 +239,10 @@ public class TIEN_PERFController implements Initializable {
         }
     }
 
+    /**
+     * Filtra y ordena los productos del comercio según el texto de búsqueda y el filtro seleccionado.
+     * Actualiza la vista con los productos resultantes.
+     */
     private void buscar() {
         String filtroSeleccionado = filtroComboBox.getValue();
         String criterioBusqueda = barraBusqueda.getText();
@@ -229,6 +273,12 @@ public class TIEN_PERFController implements Initializable {
         cargarProductosFiltrados(productosFiltrados);
     }
 
+    /**
+     * Muestra en la vista las tarjetas de los productos filtrados recibidos.
+     * Muestra mensajes de error si ocurre algún problema al cargar las tarjetas.
+     *
+     * @param productosFiltrados lista de productos a mostrar
+     */
     private void cargarProductosFiltrados(List<producto> productosFiltrados) {
         productosContainer.getChildren().clear();
 
@@ -250,6 +300,11 @@ public class TIEN_PERFController implements Initializable {
         }
     }
 
+    /**
+     * Muestra los detalles del producto seleccionado en la sección de información de producto.
+     *
+     * @param producto producto cuyos detalles se mostrarán
+     */
     private void mostrarProducto(producto producto) {
         if (producto.getImagen() != null && producto.getImagen().length > 0) {
             imagenProducto.setImage(new Image(new ByteArrayInputStream(producto.getImagen())));
@@ -261,6 +316,11 @@ public class TIEN_PERFController implements Initializable {
         categoriaProducto.setText(producto.getTipo().getCategoria().getNombre());
     }
 
+    /**
+     * Recupera la lista de productos asociados al comercio actual desde la base de datos.
+     *
+     * @return lista de productos del comercio actual
+     */
     private List<producto> obtenerProductosDeTienda() {
         if (comercioActual == null) {
             return new ArrayList<>();
@@ -272,16 +332,11 @@ public class TIEN_PERFController implements Initializable {
                 .getResultList();
     }
 
-    private void navegar(ActionEvent event, String path) {
-        try {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            NavegacionController.navegar(stage, path);
-        } catch (IOException e) {
-            LogAdministrador.escribirLogError("Error al navegar: " + e.getMessage());
-            mostrarError("Error de navegación", "No se pudo navegar a la pantalla solicitada.", e.getMessage());
-        }
-    }
-
+    /**
+     * Calcula la media de valoraciones del comercio actual consultando la base de datos.
+     *
+     * @return media de valoraciones, o 0.0 si no hay valoraciones
+     */
     private double calcularMediaValoraciones(){
 
         Query<Double> qPromedio = session.createQuery(
@@ -296,6 +351,10 @@ public class TIEN_PERFController implements Initializable {
         return promedio;
     }
 
+    /**
+     * Registra o actualiza la valoración del usuario para el comercio actual.
+     * Muestra mensajes informativos o de error según el resultado.
+     */
     @FXML
     private void confirmarValoracion() {
         String seleccion = valoracionComboBox.getValue();

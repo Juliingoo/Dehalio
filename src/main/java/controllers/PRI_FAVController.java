@@ -67,6 +67,13 @@ public class PRI_FAVController implements Initializable {
     private final MapLayer marcadorProductoLayer = new MapLayer();
     private final int limiteResultados = 1000;
 
+    /**
+     * Inicializa la pantalla de favoritos configurando los controles de búsqueda y filtro,
+     * y cargando los productos favoritos y el mapa.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados para la internacionalización
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LogAdministrador.escribirLogInfo("Inicializando pantalla de favoritos.");
@@ -82,6 +89,11 @@ public class PRI_FAVController implements Initializable {
         cargarMapa();
     }
 
+    /**
+     * Navega a la pantalla de inicio al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnInicioAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton inicio pulsado");
         escribirLogInfo("Boton inicio pulsado");
@@ -94,6 +106,11 @@ public class PRI_FAVController implements Initializable {
         }
     }
 
+    /**
+     * Navega a la pantalla de tiendas al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnTiendasAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton tiendas pulsado");
         escribirLogInfo("Boton tiendas pulsado");
@@ -106,6 +123,11 @@ public class PRI_FAVController implements Initializable {
         }
     }
 
+    /**
+     * Recarga la pantalla de favoritos al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnFavoritosAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton favoritos pulsado");
         escribirLogInfo("Boton favoritos pulsado");
@@ -118,6 +140,11 @@ public class PRI_FAVController implements Initializable {
         }
     }
 
+    /**
+     * Navega a la pantalla de ajustes al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnAjustesAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton ajustes pulsado");
         escribirLogInfo("Boton ajustes pulsado");
@@ -130,11 +157,19 @@ public class PRI_FAVController implements Initializable {
         }
     }
 
+    /**
+     * Ejecuta la búsqueda de productos favoritos según el criterio y filtro seleccionados.
+     *
+     * @param event el evento de acción que dispara la búsqueda
+     */
     @FXML
     public void btnBuscarAction(ActionEvent event) {
         buscar();
     }
 
+    /**
+     * Recupera los productos marcados como favoritos por el usuario y los muestra en la interfaz.
+     */
     private void cargarProductosFavoritos() {
         Query<productoFavorito> qProducto = session.createQuery("FROM productoFavorito WHERE usuario = :usuario", productoFavorito.class);
         qProducto.setParameter("usuario", Sesion.usuario);
@@ -149,6 +184,10 @@ public class PRI_FAVController implements Initializable {
         cargarProductos(productos);
     }
 
+    /**
+     * Filtra y ordena los productos favoritos según el texto de búsqueda y el filtro seleccionado,
+     * y actualiza la lista mostrada.
+     */
     private void buscar() {
         String filtroSeleccionado = filtroComboBox.getValue();
         String criterioBusqueda = barraBusqueda.getText();
@@ -188,6 +227,12 @@ public class PRI_FAVController implements Initializable {
         cargarProductos(productosFinales);
     }
 
+    /**
+     * Carga y muestra las tarjetas de los productos recibidos en la interfaz.
+     * Al hacer clic en una tarjeta, centra el mapa en la ubicación del producto y muestra su información.
+     *
+     * @param listaProductos lista de productos a mostrar
+     */
     private void cargarProductos(List<producto> listaProductos) {
         LogAdministrador.escribirLogInfo("Cargando lista de productos favoritos.");
         productosContainer.getChildren().clear();
@@ -226,6 +271,10 @@ public class PRI_FAVController implements Initializable {
         }
     }
 
+    /**
+     * Inicializa y configura el mapa, centrando la vista en la ubicación del usuario.
+     * Añade el mapa a la interfaz y ajusta su tamaño y estilo.
+     */
     private void cargarMapa() {
         LogAdministrador.escribirLogInfo("Cargando mapa");
 
@@ -249,6 +298,13 @@ public class PRI_FAVController implements Initializable {
         mapVBox.getChildren().add(mapView);
     }
 
+    /**
+     * Muestra la ubicación del producto seleccionado en el mapa y en la interfaz,
+     * permitiendo abrir la dirección en Google Maps.
+     *
+     * @param coordenadas coordenadas del producto en formato "latitud,longitud"
+     * @param producto producto cuya ubicación se va a mostrar
+     */
     private void mostrarUbicacion(String coordenadas, producto producto) {
         LogAdministrador.escribirLogInfo("Obteniendo coordenadas del producto: " + producto.getIdProducto());
 
@@ -273,6 +329,11 @@ public class PRI_FAVController implements Initializable {
         mapVBox.getChildren().add(ubicacionBox);
     }
 
+    /**
+     * Abre la URL especificada en el navegador web predeterminado del sistema.
+     *
+     * @param url dirección web a abrir
+     */
     private void abrirEnNavegador(String url) {
         try {
             if (Desktop.isDesktopSupported()) {

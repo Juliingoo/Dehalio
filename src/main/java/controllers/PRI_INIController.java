@@ -81,6 +81,13 @@ public class PRI_INIController implements Initializable{
     double latUsuario = coordsUsuario[0];
     double lonUsuario = coordsUsuario[1];
 
+    /**
+     * Inicializa la pantalla principal configurando los controles de búsqueda y filtros,
+     * y cargando los productos y el mapa centrado en la ubicación del usuario.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados para la internacionalización
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println(inicioInfoLogConsola() + "Inicializando pantalla principal. Recuperando productos");
@@ -102,6 +109,12 @@ public class PRI_INIController implements Initializable{
         cargarMapa();
     }
 
+    /**
+     * Navega a la pantalla de inicio al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnInicioAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton inicio pulsado");
         escribirLogInfo("Boton inicio pulsado");
@@ -114,6 +127,12 @@ public class PRI_INIController implements Initializable{
         }
     }
 
+    /**
+     * Navega a la pantalla de tiendas al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnTiendasAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton tiendas pulsado");
         escribirLogInfo("Boton tiendas pulsado");
@@ -126,6 +145,12 @@ public class PRI_INIController implements Initializable{
         }
     }
 
+    /**
+     * Navega a la pantalla de favoritos al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnFavoritosAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton favoritos pulsado");
         escribirLogInfo("Boton favoritos pulsado");
@@ -138,6 +163,12 @@ public class PRI_INIController implements Initializable{
         }
     }
 
+    /**
+     * Navega a la pantalla de ajustes al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnAjustesAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton ajustes pulsado");
         escribirLogInfo("Boton ajustes pulsado");
@@ -150,6 +181,11 @@ public class PRI_INIController implements Initializable{
         }
     }
 
+    /**
+     * Ejecuta la búsqueda de productos según el criterio y filtro seleccionados.
+     *
+     * @param event el evento de acción que dispara la búsqueda
+     */
     @FXML
     public void btnBuscarAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton buscar pulsado");
@@ -157,11 +193,18 @@ public class PRI_INIController implements Initializable{
         buscar();
     }
 
+    /**
+     * Filtra la lista de productos recibida mostrando solo aquellos cuyo comercio se encuentra
+     * dentro del radio de distancia seleccionado por el usuario.
+     *
+     * @param listaProductosSinFiltrar lista de productos a filtrar por cercanía
+     * @return lista de productos filtrados por distancia
+     */
     public List<producto> getProductosFiltradosCercania(List<producto> listaProductosSinFiltrar){
         escribirLogInfo("Filtrando productos por cercanía");
         List<producto> productosFiltrados = new ArrayList<>();
         for (producto p : listaProductosSinFiltrar) {
-            comercio c = p.getComercio(); // asumiendo getter correcto
+            comercio c = p.getComercio();
             if (c != null && c.getCoordenadas() != null) {
                 try {
                     String[] partes = c.getCoordenadas().split(",");
@@ -170,7 +213,7 @@ public class PRI_INIController implements Initializable{
 
                     double distancia = calcularDistancia(latUsuario, lonUsuario, latComercio, lonComercio);
                     LogAdministrador.escribirLogInfo("Distancia establecida: " + kmSlider.getValue());
-                    if (distancia <= kmSlider.getValue()) { // filtrar a km
+                    if (distancia <= kmSlider.getValue()) {
                         productosFiltrados.add(p);
                     }
                 } catch (Exception e) {
@@ -182,12 +225,15 @@ public class PRI_INIController implements Initializable{
         return productosFiltrados;
     }
 
+    /**
+     * Realiza la búsqueda de productos aplicando el criterio de texto, el filtro seleccionado
+     * y la cercanía geográfica, y actualiza la lista mostrada.
+     */
     private void buscar() {
         String filtroSeleccionado = filtroComboBox.getValue();
 
         String criterioBusqueda = barraBusqueda.getText();
 
-        // Buscar productos cuyo nombre coincida
         Query<producto> qProducto = session.createQuery("FROM producto WHERE nombre LIKE :criterio", producto.class);
         qProducto.setMaxResults(limiteResultados);
         qProducto.setParameter("criterio", "%" + criterioBusqueda + "%");
@@ -217,6 +263,12 @@ public class PRI_INIController implements Initializable{
         cargarProductos(getProductosFiltradosCercania(listaProducto));
     }
 
+    /**
+     * Carga y muestra las tarjetas de los productos recibidos en la interfaz.
+     * Al hacer clic en una tarjeta, centra el mapa en la ubicación del producto y muestra su información.
+     *
+     * @param listaProductos lista de productos a mostrar
+     */
     private void cargarProductos(List<producto> listaProductos) {
         escribirLogInfo("Cargando lista de productos");
         productosContainer.getChildren().clear();
@@ -260,6 +312,10 @@ public class PRI_INIController implements Initializable{
         }
     }
 
+    /**
+     * Inicializa y configura el mapa, centrando la vista en la ubicación del usuario.
+     * Añade el mapa a la interfaz y ajusta su tamaño y estilo.
+     */
     private void cargarMapa() {
         escribirLogInfo("Cargando mapa");
         System.out.println(inicioInfoLogConsola() + "Cargando mapa");
@@ -288,6 +344,13 @@ public class PRI_INIController implements Initializable{
         mapVBox.getChildren().add(mapView);
     }
 
+    /**
+     * Muestra la ubicación del producto seleccionado en el mapa y en la interfaz,
+     * permitiendo abrir la dirección en Google Maps.
+     *
+     * @param coordenadas coordenadas del producto en formato "latitud,longitud"
+     * @param producto producto cuya ubicación se va a mostrar
+     */
     private void mostrarUbicacion(String coordenadas, producto producto) {
         escribirLogInfo("Obteniendo coordenadas del producto: " + producto.getIdProducto());
         System.out.println(inicioInfoLogConsola() + "Obteniendo coordenadas del producto: " + producto.getIdProducto());
@@ -324,6 +387,11 @@ public class PRI_INIController implements Initializable{
         mapVBox.getChildren().add(ubicacionBox);
     }
 
+    /**
+     * Abre la URL especificada en el navegador web predeterminado del sistema.
+     *
+     * @param url dirección web a abrir
+     */
     private void abrirEnNavegador(String url) {
         System.out.println(inicioInfoLogConsola() + "Abriendo navegador");
         escribirLogInfo("Abriendo nabegador");

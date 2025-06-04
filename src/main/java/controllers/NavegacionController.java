@@ -38,23 +38,19 @@ public class NavegacionController {
             historialEscenas.push(stage.getScene());
         }
 
-        // Guarda tamaño actual
         double ancho = stage.getWidth();
         double alto = stage.getHeight();
 
-        // Carga nueva escena
         Parent root = FXMLLoader.load(NavegacionController.class.getResource(fxmlPath));
         Scene nuevaEscena = new Scene(root);
         stage.setScene(nuevaEscena);
 
-        // Restaura tamaño
         stage.setWidth(ancho);
         stage.setHeight(alto);
 
         // Asegura que la ventana no esté minimizada
         stage.setIconified(false);
 
-        // Muestra ventana
         stage.show();
     }
 
@@ -80,11 +76,9 @@ public class NavegacionController {
      * @param fxmlPath la ruta del archivo FXML a cargar
      */
     public static void navegarConCarga(ActionEvent event, Stage stage, String fxmlPath) {
-        // Crear un ProgressIndicator
         ProgressIndicator progressIndicator = new ProgressIndicator();
         progressIndicator.setMaxSize(50, 50);
 
-        // Mostrar el ProgressIndicator en el centro de la escena
         AnchorPane root = (AnchorPane) ((Node) event.getSource()).getScene().getRoot();
         root.getChildren().add(progressIndicator);
         AnchorPane.setTopAnchor(progressIndicator, root.getHeight() / 2 - 25);
@@ -99,7 +93,6 @@ public class NavegacionController {
             }
         };
 
-        // Cuando se completa exitosamente
         task.setOnSucceeded(e -> {
             Platform.runLater(() -> {
                 try {
@@ -118,7 +111,6 @@ public class NavegacionController {
             });
         });
 
-        // En caso de error
         task.setOnFailed(e -> {
             Platform.runLater(() -> {
                 root.getChildren().remove(progressIndicator);

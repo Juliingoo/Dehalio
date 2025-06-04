@@ -35,6 +35,13 @@ public class TarjetaSolicitudComercioController {
     private solicitudComercio solicitud;
     private ADMINISTRACIONController parentController;
 
+    /**
+     * Configura la tarjeta mostrando los datos y la imagen de la solicitud de comercio recibida.
+     * Asocia las acciones de aceptar y rechazar a los botones correspondientes, delegando en el controlador padre.
+     *
+     * @param solicitud solicitud de comercio cuyos datos se mostrarán
+     * @param controller controlador padre encargado de gestionar la aceptación o rechazo
+     */
     public void setDatos(solicitudComercio solicitud, ADMINISTRACIONController controller) {
         this.solicitud = solicitud;
         this.parentController = controller;

@@ -86,6 +86,13 @@ public class PRI_TIENController implements Initializable{
     double latUsuario = coordsUsuario[0];
     double lonUsuario = coordsUsuario[1];
 
+    /**
+     * Inicializa la pantalla de tiendas configurando los controles de búsqueda y filtros,
+     * y cargando los comercios y el mapa centrado en la ubicación del usuario.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados para la internacionalización
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println(inicioInfoLogConsola() + "Inicializando pantalla principal. Recuperando comercios");
@@ -106,6 +113,12 @@ public class PRI_TIENController implements Initializable{
         cargarMapa();
     }
 
+    /**
+     * Navega a la pantalla de inicio al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnInicioAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton inicio pulsado");
         escribirLogInfo("Boton inicio pulsado");
@@ -118,6 +131,12 @@ public class PRI_TIENController implements Initializable{
         }
     }
 
+    /**
+     * Recarga la pantalla de tiendas al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnTiendasAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton tiendas pulsado");
         escribirLogInfo("Boton tiendas pulsado");
@@ -130,6 +149,12 @@ public class PRI_TIENController implements Initializable{
         }
     }
 
+    /**
+     * Navega a la pantalla de favoritos al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnFavoritosAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton favoritos pulsado");
         escribirLogInfo("Boton favoritos pulsado");
@@ -142,6 +167,12 @@ public class PRI_TIENController implements Initializable{
         }
     }
 
+    /**
+     * Navega a la pantalla de ajustes al pulsar el botón correspondiente.
+     * Muestra un error si ocurre un problema durante la navegación.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnAjustesAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton ajustes pulsado");
         escribirLogInfo("Boton ajustes pulsado");
@@ -154,6 +185,11 @@ public class PRI_TIENController implements Initializable{
         }
     }
 
+    /**
+     * Ejecuta la búsqueda de comercios según el criterio y filtro seleccionados.
+     *
+     * @param event el evento de acción que dispara la búsqueda
+     */
     @FXML
     public void btnBuscarAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton buscar pulsado");
@@ -161,6 +197,13 @@ public class PRI_TIENController implements Initializable{
         buscar();
     }
 
+    /**
+     * Filtra la lista de comercios recibida mostrando solo aquellos que se encuentran
+     * dentro del radio de distancia seleccionado por el usuario.
+     *
+     * @param listaComerciosSinFiltrar lista de comercios a filtrar por cercanía
+     * @return lista de comercios filtrados por distancia
+     */
     public List<comercio> getComerciosFiltradosCercania(List<comercio> listaComerciosSinFiltrar){
         escribirLogInfo("Filtrando comercios por cercanía");
         List<comercio> comerciosFiltrados = new ArrayList<>();
@@ -185,6 +228,10 @@ public class PRI_TIENController implements Initializable{
         return comerciosFiltrados;
     }
 
+    /**
+     * Realiza la búsqueda de comercios aplicando el criterio de texto, el filtro seleccionado
+     * y la cercanía geográfica, y actualiza la lista mostrada.
+     */
     private void buscar() {
         String filtroSeleccionado = filtroComboBox.getValue();
 
@@ -213,6 +260,12 @@ public class PRI_TIENController implements Initializable{
         cargarComercios(getComerciosFiltradosCercania(listaComercio));
     }
 
+    /**
+     * Carga y muestra las tarjetas de los comercios recibidos en la interfaz.
+     * Al hacer clic en una tarjeta, centra el mapa en la ubicación del comercio y muestra su información.
+     *
+     * @param listaComercios lista de comercios a mostrar
+     */
     private void cargarComercios(List<comercio> listaComercios) {
         escribirLogInfo("Cargando lista de tiendas");
         comerciosContainer.getChildren().clear();
@@ -250,11 +303,14 @@ public class PRI_TIENController implements Initializable{
                 }
             });
 
-            // Añadir tarjeta al contenedor principal
             comerciosContainer.getChildren().add(tarjetaComercio);
         }
     }
 
+    /**
+     * Inicializa y configura el mapa, centrando la vista en la ubicación del usuario.
+     * Añade el mapa a la interfaz y ajusta su tamaño y estilo.
+     */
     private void cargarMapa() {
         escribirLogInfo("Cargando mapa");
         System.out.println(inicioInfoLogConsola() + "Cargando mapa");
@@ -266,7 +322,6 @@ public class PRI_TIENController implements Initializable{
         mapView.prefHeightProperty().bind(mapVBox.heightProperty());
         VBox.setVgrow(mapView, Priority.ALWAYS);
 
-        // Clip para esquinas redondeadas
         Rectangle clip = new Rectangle();
         clip.setArcWidth(30);
         clip.setArcHeight(30);
@@ -277,12 +332,16 @@ public class PRI_TIENController implements Initializable{
         mapView.flyTo(0, mapPoint, 0.1);
         mapView.setZoom(15);
 
-        // Añadir capa de marcador al mapa
-//        mapView.addLayer(marcadorComercioLayer);
-
         mapVBox.getChildren().add(mapView);
     }
 
+    /**
+     * Muestra la ubicación del comercio seleccionado en el mapa y en la interfaz,
+     * permitiendo abrir la dirección en Google Maps.
+     *
+     * @param coordenadas coordenadas del comercio en formato "latitud,longitud"
+     * @param comercio comercio cuya ubicación se va a mostrar
+     */
     private void mostrarUbicacion(String coordenadas, comercio comercio) {
         escribirLogInfo("Obteniendo coordenadas del comercio: " + comercio.getIdComercio());
         System.out.println(inicioInfoLogConsola() + "Obteniendo coordenadas del comercio: " + comercio.getIdComercio());
@@ -290,12 +349,10 @@ public class PRI_TIENController implements Initializable{
         // Si ya existe el HBox de ubicación, lo quitamos para evitar duplicados
         mapVBox.getChildren().removeIf(node -> "ubicacionBox".equals(node.getId()));
 
-        // Texto con la ubicación
         Label ubicacionLabel = new Label("Ubicación del comercio: " + comercio.getDireccion() + ", "
                 + comercio.getMunicipio() + ", " + comercio.getProvincia());
         ubicacionLabel.setStyle("-fx-font-size: 14px;");
 
-        // Botón para abrir Google Maps
         Button abrirEnMapsBtn = new Button("Ver en Google Maps");
         abrirEnMapsBtn.setStyle("-fx-background-color: #de4733;" +
                 "    -fx-text-fill: #FFFFFF;" +
@@ -308,16 +365,19 @@ public class PRI_TIENController implements Initializable{
             abrirEnNavegador(url);
         });
 
-        // Contenedor horizontal
         HBox ubicacionBox = new HBox(10, ubicacionLabel, abrirEnMapsBtn);
         ubicacionBox.setId("ubicacionBox");
         ubicacionBox.setAlignment(Pos.CENTER_LEFT);
         ubicacionBox.setPadding(new Insets(10));
 
-        // Añadir debajo del mapa
         mapVBox.getChildren().add(ubicacionBox);
     }
 
+    /**
+     * Abre la URL especificada en el navegador web predeterminado del sistema.
+     *
+     * @param url dirección web a abrir
+     */
     private void abrirEnNavegador(String url) {
         System.out.println(inicioInfoLogConsola() + "Abriendo navegador");
         escribirLogInfo("Abriendo nabegador");

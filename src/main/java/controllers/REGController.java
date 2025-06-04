@@ -39,12 +39,23 @@ public class REGController {
 
     Session session = newSession();
 
+    /**
+     * Navega a la pantalla anterior al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     @FXML
     void volverAtrasAction(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         NavegacionController.irAtras(stage);
     }
 
+    /**
+     * Valida los datos del formulario de registro, comprueba la existencia del usuario y registra uno nuevo si es válido.
+     * Muestra mensajes de error o éxito según el resultado.
+     *
+     * @param event el evento de acción que dispara el registro
+     */
     @FXML
     void registrarseAction(ActionEvent event){
         String nombre = nombreCampo.getText();
@@ -108,6 +119,12 @@ public class REGController {
 
     }
 
+    /**
+     * Comprueba si ya existe un usuario registrado con el mismo correo electrónico en la base de datos.
+     *
+     * @param usuario el usuario a comprobar por email
+     * @return true si el usuario ya existe, false en caso contrario
+     */
     boolean existeUsuario(usuario usuario){
         Query<usuario> qUsuarioComprobacionEmail = newSession().createQuery("from usuario where email = :email");
         qUsuarioComprobacionEmail.setParameter("email", usuario.getEmail());

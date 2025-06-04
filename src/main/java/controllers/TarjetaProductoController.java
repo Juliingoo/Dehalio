@@ -36,6 +36,12 @@ public class TarjetaProductoController {
 
     Session session = newSession();
 
+    /**
+     * Configura la tarjeta mostrando la imagen, nombre, precio y comercio del producto recibido.
+     * Permite añadir o quitar el producto de favoritos y actualiza el icono correspondiente.
+     *
+     * @param producto producto cuyos datos se mostrarán en la tarjeta
+     */
     public void setProducto(producto producto) {
         if (producto.getImagen() != null && producto.getImagen().length > 0) {
             imageView.setImage(new Image(new ByteArrayInputStream(producto.getImagen())));
@@ -81,6 +87,12 @@ public class TarjetaProductoController {
         });
     }
 
+    /**
+     * Comprueba si el producto está marcado como favorito por el usuario actual
+     * y actualiza el icono del corazón según corresponda.
+     *
+     * @param producto producto a comprobar en la lista de favoritos
+     */
     private void actualizarIconoFavorito(producto producto) {
         Session sessionAux = newSession();
         productoFavorito favorito = sessionAux.createQuery(

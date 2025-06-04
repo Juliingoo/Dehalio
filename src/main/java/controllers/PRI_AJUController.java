@@ -55,6 +55,12 @@ public class PRI_AJUController implements Initializable {
 
     private Session sesion = newSession();
 
+    /**
+     * Inicializa la pantalla de ajustes cargando los datos de usuario, productos y configurando los controles.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados para la internacionalización
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         escribirLogInfo("Inicializando pantalla de ajustes.");
@@ -83,6 +89,9 @@ public class PRI_AJUController implements Initializable {
         cargarUsuarioYComercio();
     }
 
+    /**
+     * Configura la visualización de nombres en los listados y combos de productos y categorías.
+     */
     public void establecerListadosNombre(){
         lvProductos.setCellFactory(lv -> new ListCell<producto>() {
             @Override
@@ -121,6 +130,11 @@ public class PRI_AJUController implements Initializable {
         });
     }
 
+    /**
+     * Navega a la pantalla de inicio al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnInicioAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton inicio pulsado");
         escribirLogInfo("Boton inicio pulsado");
@@ -133,6 +147,11 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Navega a la pantalla de tiendas al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnTiendasAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton tiendas pulsado");
         escribirLogInfo("Boton tiendas pulsado");
@@ -145,6 +164,11 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Navega a la pantalla de favoritos al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnFavoritosAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton favoritos pulsado");
         escribirLogInfo("Boton favoritos pulsado");
@@ -157,6 +181,11 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Recarga la pantalla de ajustes al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void btnAjustesAction(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton ajustes pulsado");
         escribirLogInfo("Boton ajustes pulsado");
@@ -169,6 +198,9 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Carga los datos del usuario actual y su comercio asociado, mostrando los productos si es propietario.
+     */
     private void cargarUsuarioYComercio() {
         // asumimos que usuarioActual se obtuvo en login y se pasa por NavegacionController
         usuarioActual = Sesion.usuario;
@@ -192,6 +224,10 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Recupera y muestra los productos del comercio del usuario en la lista.
+     * Muestra un error si ocurre algún problema durante la carga.
+     */
     private void cargarProductosEnList() {
         lvProductos.getItems().clear();
         try (Session s = newSession()) {
@@ -208,7 +244,11 @@ public class PRI_AJUController implements Initializable {
     }
 
 
-    // —— ACCIONES USUARIO ————————————————————————————————————————————————————
+    /**
+     * Guarda los cambios realizados en los datos del usuario actual en la base de datos.
+     *
+     * @param ev el evento de acción que dispara el guardado
+     */
     @FXML
     private void onGuardarUsuario(ActionEvent ev) {
         try (Session s = newSession()) {
@@ -229,7 +269,12 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
-    // —— SOLICITAR PROPIETARIO —————————————————————————————————————————————
+    /**
+     * Permite al usuario solicitar ser propietario de un comercio si no tiene una solicitud pendiente.
+     * Muestra información si ya existe una solicitud registrada.
+     *
+     * @param event el evento de acción que dispara la solicitud
+     */
     @FXML
     private void onSolicitarPropietario(ActionEvent event) {
         Query<solicitudComercio> qSolicitud = sesion.createQuery("FROM solicitudComercio WHERE solicitante = :solicitanteId");
@@ -253,13 +298,22 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
-    // —— CRUD PRODUCTOS ——————————————————————————————————————————————————————
+    /**
+     * Inicia el proceso para agregar un nuevo producto mostrando el editor correspondiente.
+     *
+     * @param ev el evento de acción que dispara la adición
+     */
     @FXML
     private void onAddProducto(ActionEvent ev) {
         productoEnEdicion = null;
         abrirEditorNuevo();
     }
 
+    /**
+     * Carga los datos del producto seleccionado en el editor para su modificación.
+     *
+     * @param ev el evento de acción que dispara la edición (puede ser null si se llama desde el listener)
+     */
     @FXML
     private void onEditProducto(ActionEvent ev) {
         productoEnEdicion = lvProductos.getSelectionModel().getSelectedItem();
@@ -277,6 +331,11 @@ public class PRI_AJUController implements Initializable {
         abrirEditorNuevo();
     }
 
+    /**
+     * Elimina el producto seleccionado de la base de datos y actualiza la lista de productos.
+     *
+     * @param ev el evento de acción que dispara la eliminación
+     */
     @FXML
     private void onDeleteProducto(ActionEvent ev) {
         producto sel = lvProductos.getSelectionModel().getSelectedItem();
@@ -293,11 +352,19 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Muestra el panel de edición de producto para crear o modificar un producto.
+     */
     private void abrirEditorNuevo() {
         paneEditorProducto.setVisible(true);
         paneEditorProducto.setManaged(true);
     }
 
+    /**
+     * Permite seleccionar una imagen desde el sistema de archivos y la asigna al producto en edición.
+     *
+     * @param ev el evento de acción que dispara el cambio de imagen
+     */
     @FXML
     private void onCambiarImagen(ActionEvent ev) {
         FileChooser chooser = new FileChooser();
@@ -316,6 +383,12 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Guarda o actualiza el producto en la base de datos con los datos ingresados en el editor.
+     * Valida los campos obligatorios antes de guardar.
+     *
+     * @param ev el evento de acción que dispara el guardado
+     */
     @FXML
     private void onGuardarProducto(ActionEvent ev) {
         if (tfProdNombre.getText().isBlank()) {
@@ -350,6 +423,11 @@ public class PRI_AJUController implements Initializable {
         }
     }
 
+    /**
+     * Cancela la edición del producto, limpia los campos y oculta el panel de edición.
+     *
+     * @param ev el evento de acción que dispara la cancelación
+     */
     @FXML
     private void onCancelarEdicion(ActionEvent ev) {
         paneEditorProducto.setVisible(false);
@@ -363,6 +441,11 @@ public class PRI_AJUController implements Initializable {
         cbCategoriaProd.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Navega a la pantalla de administración al pulsar el botón correspondiente.
+     *
+     * @param event el evento de acción que dispara la navegación
+     */
     public void lanzarAdministracion(ActionEvent event) {
         System.out.println(inicioInfoLogConsola() + "Boton administración pulsado");
         escribirLogInfo("Boton administración pulsado");
