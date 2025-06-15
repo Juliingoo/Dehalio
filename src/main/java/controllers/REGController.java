@@ -10,14 +10,15 @@ import org.hibernate.Session;
 
 import org.hibernate.Query;
 import utilities.LogAdministrador;
+import utilities.Paths;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import static controllers.NavegacionController.mostrarError;
-import static controllers.NavegacionController.mostrarInformacion;
+import static controllers.NavegacionController.*;
 import static database.Sesion.newSession;
 import static utilities.Encriptacion.encriptarMD5;
 
@@ -45,9 +46,10 @@ public class REGController {
      * @param event el evento de acción que dispara la navegación
      */
     @FXML
-    void volverAtrasAction(ActionEvent event) {
+    void volverAtrasAction(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        NavegacionController.irAtras(stage);
+//        NavegacionController.irAtras(stage);
+        navegar(stage, Paths.INI);
     }
 
     /**
@@ -106,7 +108,8 @@ public class REGController {
                 mostrarInformacion("Registro exitoso", "Se ha registrado su usuario correctamente",
                         "Gracias por unirse a Dehalio 😀. Ya puede iniciar sesión. ");
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                NavegacionController.irAtras(stage);
+//                NavegacionController.irAtras(stage);
+                navegar(stage, Paths.INI);
             } else {
                 mostrarError("Error al registrarse", "Se ha producido un error al registrarse",
                         "No se pudo guardar el usuario nuevo");

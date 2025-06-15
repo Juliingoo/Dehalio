@@ -65,6 +65,29 @@ public class PRI_AJUController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         escribirLogInfo("Inicializando pantalla de ajustes.");
 
+        //Refrescar usuario y comercio
+        try (Session s = newSession()) {
+            if (Sesion.usuario != null) {
+                Sesion.usuario = s.get(model.usuario.class, Sesion.usuario.getIdUsuario());
+                if (Sesion.usuario.isPropietario()) {
+                    // Obtener comercio asociado solo si es propietario
+                    List<model.comercio> comercios = s.createQuery(
+                                    "FROM comercio WHERE propietario = :usuario", model.comercio.class)
+                            .setParameter("usuario", Sesion.usuario)
+                            .list();
+                    if (!comercios.isEmpty()) {
+                        Sesion.comercio = comercios.getFirst();
+                    } else {
+                        Sesion.comercio = null;
+                    }
+                } else {
+                    Sesion.comercio = null;
+                }
+            }
+        } catch (Exception e) {
+            escribirLogError("Error refrescando usuario/comercio: " + e);
+        }
+
         // cargar datos de comboBoxes
         try (Session s = newSession()) {
             List<tipoProducto> tipos = s.createQuery("FROM tipoProducto", tipoProducto.class).list();
@@ -393,6 +416,10 @@ public class PRI_AJUController implements Initializable {
     private void onGuardarProducto(ActionEvent ev) {
         if (tfProdNombre.getText().isBlank()) {
             mostrarError("Validación", "El nombre es obligatorio.", "");
+            return;
+        }
+        if (Sesion.comercio == null) {
+            mostrarError("Validación", "No se ha encontrado el comercio asociado.", "No es posible guardar el producto sin un comercio.");
             return;
         }
         try (Session s = newSession()) {

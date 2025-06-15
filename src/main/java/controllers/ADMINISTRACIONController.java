@@ -51,7 +51,7 @@ public class ADMINISTRACIONController {
             List<solicitudComercio> lista = qSolicitudes.getResultList();
 
             if (lista.isEmpty()) {
-                mostrarInformacion("Información", "No hay solicitudes para mostrar.", "Ningún usuario ha realizado una solicitud");
+                mostrarInformacion("Información", "No hay solicitudes para mostrar.","");
                 return;
             }
 
